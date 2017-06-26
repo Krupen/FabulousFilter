@@ -47,7 +47,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         //params to set
         setAnim_duration(1000); //optional; default 400ms
-        setPeek_height(400); // optional; default 400dp
+        setPeek_height(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
         setViewgroup_static(ll_buttons); // optional
         setView_main(rl_content); //necessary; main bottomsheet view

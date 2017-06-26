@@ -185,7 +185,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
-        scale_by = (float) (peek_height * 1.6 / fab_size);
+        scale_by = (float) (peek_height * 1.6 / fab_size)*metrics.density;
         fabulous_fab = (FloatingActionButton) contentView.findViewWithTag("aah_fab");
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(fab_size, fab_size);
         fabulous_fab.setLayoutParams(lp);
@@ -286,7 +286,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                             mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                             BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
                             bottomSheet.requestLayout();
-                            fabulous_fab.setY(fab_outside_y_offest - fab_pos_y + getStatusBarHeight(getContext()));
+//                            fabulous_fab.setY(fab_outside_y_offest - fab_pos_y + getStatusBarHeight(getContext()));
                         } else {
                             mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
                         }
