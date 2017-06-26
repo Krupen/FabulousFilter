@@ -2,6 +2,7 @@ package com.allattentionhere.fabulousfilter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,8 +29,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import static android.R.attr.fragment;
+import static android.R.attr.y;
 import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 
@@ -39,7 +42,7 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
-    FloatingActionButton parent_fab;
+    private FloatingActionButton parent_fab;
     private DisplayMetrics metrics;
 
     private int peek_height = 400;
@@ -55,6 +58,11 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     private int fab_size = 56, fab_pos_y, fab_pos_x;
     private float scale_by = 12f;
     private FrameLayout bottomSheet;
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private int y_offest = 0;
+    private LinearLayout ll;
+    private boolean is_fab_outside_peekheight;
+
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
@@ -141,10 +149,20 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
         ((View) contentView.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        BottomSheetBehavior mBottomSheetBehavior = BottomSheetBehavior.from(((View) contentView.getParent()));
+        mBottomSheetBehavior = BottomSheetBehavior.from(((View) contentView.getParent()));
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
-            mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
+            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density)) <= 0) {
+                is_fab_outside_peekheight = true;
+                mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
+                y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
+                ll = (LinearLayout) contentView.findViewWithTag("aah_ll");
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, y_offest);
+                ll.setLayoutParams(lp);
+                ll.setBackgroundResource(android.R.color.transparent);
+            } else {
+                mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
+            }
             contentView.requestLayout();
         }
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -166,7 +184,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                 Log.d("k9xy", "fab_pos_y: +" + fab_pos_y);
                 Log.d("k9xy", "fab_size: -" + fab_size);
                 Log.d("k9xy", "fab_range_y: =" + fab_range_y);
-                fabulous_fab.setY(fab_range_y);
+                fabulous_fab.setY(fab_range_y + y_offest);
                 fabulous_fab.setX(fab_pos_x);
                 view_main.setVisibility(View.INVISIBLE);
                 fabAnim();
@@ -216,13 +234,20 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
+                        BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        if (is_fab_outside_peekheight) {
+                            ll.setVisibility(View.VISIBLE);
+                        }
+
                         fabulous_fab.animate().translationXBy(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2))
-                                .translationYBy(-(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density))))).setDuration(0)
+                                .translationYBy(-(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))) - y_offest).setDuration(0)
                                 .setListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationStart(Animator animation) {
                                         super.onAnimationStart(animation);
                                         fabulous_fab.setVisibility(View.VISIBLE);
+
                                     }
 
                                     @Override
@@ -261,6 +286,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     }
 
     public void closeFilter(final Object o) {
+
         BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
         fabulous_fab.setVisibility(View.VISIBLE);
         view_main.setVisibility(View.INVISIBLE);
@@ -273,12 +299,20 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                         super.onAnimationEnd(animation);
                         fabulous_fab.animate().setListener(null);
                         fabulous_fab.setImageDrawable(fab_icon_resource);
-                        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2)), 0, (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
+                        if (is_fab_outside_peekheight) {
+                            mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
+                        } else {
+                            mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
+                        }
+                        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2)), y_offest, (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))) + y_offest);
                         anim.setDuration(anim_duration);
                         fabulous_fab.startAnimation(anim);
                         anim.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
+                                if (is_fab_outside_peekheight) {
+                                    ll.setVisibility(View.GONE);
+                                }
 
                             }
 
