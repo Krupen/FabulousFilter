@@ -24,26 +24,16 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] location = new int[2];
-                fab.getLocationInWindow(location);
-                int x = location[0];
-                int y = location[1];
-                Log.d("k9xy", "fab width: " + fab.getWidth() + " | h=" + fab.getHeight());
-                MyFabFragment dialogFrag = MyFabFragment.newInstance(x, y, fab.getHeight());
-//        dialogFrag.setTargetFragment(this, FILTERDIALOG_FRAGMENT);
+                MyFabFragment dialogFrag = MyFabFragment.newInstance();
+                dialogFrag.setParent_fab(fab);
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
     }
 
-    @Override
-    public void setFabVisibility(int visibility) {
-        fab.setVisibility(visibility);
-    }
 
     @Override
     public void onResult(Object result) {
-        Log.d("k9", "onResult: "+result.toString());
-        //dismissed fabulous frag
+        Log.d("aah", "onResult: " + result.toString());
     }
 }

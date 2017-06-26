@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,19 +39,22 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
+    FloatingActionButton parent_fab;
     private DisplayMetrics metrics;
 
     private int peek_height = 400;
-    private int anim_duration = 1000;
+    private int anim_duration = 400;
 
     private FloatingActionButton fabulous_fab;
     private View view_main;
     private View viewgroup_static;
-    private int fab_icon_resource;
+    private Drawable fab_icon_resource;
+    private ColorStateList fab_background_color_resource;
     private View contentView;
     private Callbacks callbacks;
-    private int fab_size, fab_pos_y,fab_pos_x;
+    private int fab_size = 56, fab_pos_y, fab_pos_x;
     private float scale_by = 12f;
+    private FrameLayout bottomSheet;
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
@@ -57,7 +62,9 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             switch (newState) {
                 case BottomSheetBehavior.STATE_HIDDEN:
-                    callbacks.onResult("okay");
+                    if (callbacks != null) {
+                        callbacks.onResult("swiped_down");
+                    }
                     dismiss();
                     break;
                 case BottomSheetBehavior.STATE_COLLAPSED:
@@ -76,8 +83,10 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
-            viewgroup_static.animate().translationY(-range + (range * slideOffset)).setDuration(0).start();
+            if (viewgroup_static != null) {
+                int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
+                viewgroup_static.animate().translationY(-range + (range * slideOffset)).setDuration(0).start();
+            }
         }
     };
 
@@ -100,7 +109,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         metrics = this.getResources().getDisplayMetrics();
 
-        Log.d("k9xy", "width : "+metrics.widthPixels+" | height: "+metrics.heightPixels+ "| density: "+metrics.density);
+        Log.d("k9xy", "width : " + metrics.widthPixels + " | height: " + metrics.heightPixels + "| density: " + metrics.density);
 
     }
 
@@ -117,9 +126,18 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        Log.d("k9xy", "initial fab_pos_y : "+fab_pos_y);
-//        fab_pos_y= (int) (((metrics.heightPixels-fab_pos_y)-fab_size)/metrics.density);
-        Log.d("k9xy", "fab_pos_y : "+fab_pos_y);
+        dialog.setContentView(contentView);
+
+        int[] location = new int[2];
+        parent_fab.getLocationInWindow(location);
+        int x = location[0];
+        int y = location[1];
+
+        fab_size = parent_fab.getHeight();
+        fab_pos_y = y;
+        fab_pos_x = x;
+        fab_icon_resource = parent_fab.getDrawable();
+        fab_background_color_resource = parent_fab.getBackgroundTintList();
 
         ((View) contentView.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
@@ -133,19 +151,21 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
             @Override
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
-                FrameLayout bottomSheet = (FrameLayout) d.findViewById(android.support.design.R.id.design_bottom_sheet);
+                bottomSheet = (FrameLayout) d.findViewById(android.support.design.R.id.design_bottom_sheet);
                 BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
-                int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
-                viewgroup_static.animate().translationY(-range).setDuration(0).start();
+                if (viewgroup_static != null) {
+                    int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
+                    viewgroup_static.animate().translationY(-range).setDuration(0).start();
+                }
 //                int fab_range_y = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext())  + (metrics.density * fab_pos_y) - fab_size);
                 int fab_range_y = (int) (fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)));
 //                fabulous_fab.animate().translationY(-fab_range_y).setDuration(0).start();
-                Log.d("k9xy", "metrics.heightPixels: +"+metrics.heightPixels);
-                Log.d("k9xy", "peek_height: -"+peek_height);
-                Log.d("k9xy", "getStatusBarHeight: -"+getStatusBarHeight(getContext()));
-                Log.d("k9xy", "fab_pos_y: +"+fab_pos_y);
-                Log.d("k9xy", "fab_size: -"+fab_size);
-                Log.d("k9xy", "fab_range_y: ="+fab_range_y);
+                Log.d("k9xy", "metrics.heightPixels: +" + metrics.heightPixels);
+                Log.d("k9xy", "peek_height: -" + peek_height);
+                Log.d("k9xy", "getStatusBarHeight: -" + getStatusBarHeight(getContext()));
+                Log.d("k9xy", "fab_pos_y: +" + fab_pos_y);
+                Log.d("k9xy", "fab_size: -" + fab_size);
+                Log.d("k9xy", "fab_range_y: =" + fab_range_y);
                 fabulous_fab.setY(fab_range_y);
                 fabulous_fab.setX(fab_pos_x);
                 view_main.setVisibility(View.INVISIBLE);
@@ -161,22 +181,27 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
-        scale_by = (float) (peek_height*1.6/fab_size);
+        scale_by = (float) (peek_height * 1.6 / fab_size);
+        fabulous_fab = (FloatingActionButton) contentView.findViewWithTag("aah_fab");
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(fab_size, fab_size);
+        fabulous_fab.setLayoutParams(lp);
+        fabulous_fab.setImageDrawable(fab_icon_resource);
+        fabulous_fab.setBackgroundTintList(fab_background_color_resource);
+
 
     }
 
 
     private void fabAnim() {
         Log.d("k9lib", "fabanim called : ");
-        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, metrics.widthPixels / 2 - fab_pos_x - (fab_size/2), 0, -(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels-fab_pos_y)-fab_size)/metrics.density)))));
+        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2), 0, -(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
         anim.setDuration(anim_duration);
         fabulous_fab.startAnimation(anim);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 if (getActivity() != null && !getActivity().isFinishing()) {
-                    callbacks.setFabVisibility(View.GONE);
-                    Log.d("k9lib", "callbacks working : ");
+                    parent_fab.setVisibility(View.GONE);
                 }
             }
 
@@ -191,8 +216,8 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        fabulous_fab.animate().translationXBy(metrics.widthPixels / 2 - fab_pos_x - (fab_size/2))
-                                .translationYBy(-(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels-fab_pos_y)-fab_size)/metrics.density))))).setDuration(0)
+                        fabulous_fab.animate().translationXBy(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2))
+                                .translationYBy(-(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density))))).setDuration(0)
                                 .setListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationStart(Animator animation) {
@@ -235,7 +260,8 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
     }
 
-    public void closeFilter() {
+    public void closeFilter(final Object o) {
+        BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
         fabulous_fab.setVisibility(View.VISIBLE);
         view_main.setVisibility(View.INVISIBLE);
         fabulous_fab.animate().scaleXBy(-scale_by)
@@ -246,8 +272,8 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         fabulous_fab.animate().setListener(null);
-                        fabulous_fab.setImageResource(fab_icon_resource);
-                        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size/2)), 0, (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels-fab_pos_y)-fab_size)/metrics.density)))));
+                        fabulous_fab.setImageDrawable(fab_icon_resource);
+                        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2)), 0, (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
                         anim.setDuration(anim_duration);
                         fabulous_fab.startAnimation(anim);
                         anim.setAnimationListener(new Animation.AnimationListener() {
@@ -265,7 +291,9 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                                     @Override
                                     public void run() {
                                         //Do something after 100ms
-                                        callbacks.onResult("okay");
+                                        if (callbacks != null) {
+                                            callbacks.onResult(o);
+                                        }
                                         dismiss();
                                     }
                                 }, 50);
@@ -283,13 +311,12 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onStop() {
-        callbacks.setFabVisibility(View.VISIBLE);
+        parent_fab.setVisibility(View.VISIBLE);
         super.onStop();
     }
 
 
     public interface Callbacks {
-        void setFabVisibility(int visibility);
         void onResult(Object result);
     }
 
@@ -305,34 +332,21 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         this.viewgroup_static = viewgroup_static;
     }
 
-    public void setFab_icon_resource(int fab_icon_resource) {
-        this.fab_icon_resource = fab_icon_resource;
-    }
-
-
     public void setMainContentView(View contentView) {
         this.contentView = contentView;
     }
 
-    public void setFab_size(int fab_size) {
-        this.fab_size = fab_size;
-    }
-
-    public void setFab_pos_y(int fab_pos_y) {
-        this.fab_pos_y = fab_pos_y;
-    }
-
-    public void setFab_pos_x(int fab_pos_x) {
-        this.fab_pos_x = fab_pos_x;
-    }
-
-    public void setFabulous_fab(FloatingActionButton fabulous_fab) {
-        this.fabulous_fab = fabulous_fab;
-    }
 
     public void setCallbacks(Callbacks callbacks) {
         this.callbacks = callbacks;
     }
 
 
+    public void setParent_fab(FloatingActionButton parent_fab) {
+        this.parent_fab = parent_fab;
+    }
+
+    public void setAnim_duration(int anim_duration) {
+        this.anim_duration = anim_duration;
+    }
 }
