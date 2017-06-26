@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 
 /**
@@ -22,6 +21,7 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 public class MyFabFragment extends AAH_FabulousFragment {
 
     int x, y, fabsize;
+    Object result = "this is sample result";
 
     public static MyFabFragment newInstance(int x, int y, int fabsize) {
         MyFabFragment mff = new MyFabFragment();
@@ -54,22 +54,22 @@ public class MyFabFragment extends AAH_FabulousFragment {
             @Override
             public void onClick(View v) {
                 Log.d("k9click", "onClick imgbtn_refresh: ");
-                closeFilter();
+                closeFilter(result);
             }
         });
 
-        setView_main(rl_main);
-        setViewgroup_static(ll_buttons);
-        setFabulous_fab(fabulous_fab);
-        setPeek_height(400);
-        setFab_icon_resource(android.R.drawable.ic_input_add);
-        setFab_size(fabsize);
-        setFab_pos_x(x);
-        setFab_pos_y(y);
-        setCallbacks((Callbacks) getActivity());
 
-        dialog.setContentView(contentView);
-        setMainContentView(contentView);
+        //params to set
+        setView_main(rl_main); //necessary
+        setViewgroup_static(ll_buttons); // optional
+        setFabulous_fab(fabulous_fab); //necessary
+        setPeek_height(500); // optional; default 400dp
+        setFab_icon_resource(android.R.drawable.ic_input_add); //necessary
+        setFab_size(fabsize); //necessary
+        setFab_pos_x(x); //necessary
+        setFab_pos_y(y); //necessary
+        setCallbacks((Callbacks) getActivity()); //necessary
+        setMainContentView(contentView);// call at end
 
         super.setupDialog(dialog, style);
 

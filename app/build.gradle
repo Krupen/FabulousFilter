@@ -8,7 +8,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,6 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     testCompile 'junit:junit:4.12'
     compile project(':fabulousfilter')
-    compile 'com.jakewharton:butterknife:8.4.0'
 
 }

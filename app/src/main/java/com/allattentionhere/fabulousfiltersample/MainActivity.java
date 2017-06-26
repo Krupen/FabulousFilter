@@ -8,8 +8,6 @@ import android.view.View;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.allattentionhere.fabulousfiltersample.R.id.fab;
 
@@ -21,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
