@@ -50,7 +50,6 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     private FrameLayout bottomSheet;
     private BottomSheetBehavior mBottomSheetBehavior;
     private int fab_outside_y_offest = 0;
-    private LinearLayout ll_temp;
     private boolean is_fab_outside_peekheight;
 
     //user params
@@ -155,10 +154,6 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                 is_fab_outside_peekheight = true;
                 mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                 fab_outside_y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
-                ll_temp = (LinearLayout) contentView.findViewWithTag("aah_ll");
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fab_outside_y_offest);
-                ll_temp.setLayoutParams(lp);
-                ll_temp.setBackgroundResource(android.R.color.transparent);
             } else {
                 mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
             }
@@ -226,7 +221,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                         mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
                         BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
                         if (is_fab_outside_peekheight) {
-                            ll_temp.setVisibility(View.VISIBLE);
+                            bottomSheet.requestLayout();
                         }
 
                         fabulous_fab.animate().translationXBy(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2))
@@ -290,7 +285,6 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                         if (is_fab_outside_peekheight) {
                             mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                             BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
-                            ll_temp.setVisibility(View.GONE);
                             bottomSheet.requestLayout();
                             fabulous_fab.setY(fab_outside_y_offest - fab_pos_y + getStatusBarHeight(getContext()));
                         } else {

@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 
 public class AAH_FilterView extends FrameLayout {
     FloatingActionButton fab;
-    LinearLayout ll;
 
     public AAH_FilterView(@NonNull Context context) {
         super(context);
@@ -48,18 +47,11 @@ public class AAH_FilterView extends FrameLayout {
         return fab;
     }
 
-    public LinearLayout getLl() {
-        return ll;
-    }
 
     public void init() {
         fab = new FloatingActionButton(getContext());
         fab.setTag("aah_fab");
-        ll= new LinearLayout(getContext());
-        ll.setTag("aah_ll");
-        ll.setVisibility(GONE);
         this.addView(fab);
-        this.addView(ll);
 
     }
 }
