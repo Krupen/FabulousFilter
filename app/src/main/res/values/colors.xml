@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="bg">#f5f5f5</color>
+
+    <color name="filtersfab">#10558a</color>
+    <color name="filters_header">#043a62</color>
+    <color name="filters_buttons">#FF4081</color>
+    <color name="filters_buttons_selected">#8A2346</color>
+    <color name="filters_chips">#4ce0ec</color>
+
 </resources>
