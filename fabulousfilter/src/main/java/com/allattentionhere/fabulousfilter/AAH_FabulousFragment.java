@@ -152,11 +152,13 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         mBottomSheetBehavior = BottomSheetBehavior.from(((View) contentView.getParent()));
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
-            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density)) <= 0) {
+            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density)-(fab_size*metrics.density)) <= 0) {
+                Log.d("k9fix", "is_fab_outside_peekheight: true ");
                 is_fab_outside_peekheight = true;
                 mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                 fab_outside_y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
             } else {
+                Log.d("k9fix", "is_fab_outside_peekheight: false");
                 mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
             }
             contentView.requestLayout();
