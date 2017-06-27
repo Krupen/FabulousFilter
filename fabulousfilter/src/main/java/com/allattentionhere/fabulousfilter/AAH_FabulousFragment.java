@@ -25,6 +25,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -56,6 +57,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     private int peek_height = 400;
     private int anim_duration = 400;
     private FloatingActionButton fabulous_fab;
+    private FrameLayout fl;
     private View view_main;
     private View viewgroup_static;
     private Drawable fab_icon_resource;
@@ -187,10 +189,22 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
         scale_by = (float) (peek_height * 1.6 / fab_size)*metrics.density;
         fabulous_fab = (FloatingActionButton) contentView.findViewWithTag("aah_fab");
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(fab_size, fab_size);
+        fl = (FrameLayout) contentView.findViewWithTag("aah_fl");
+        int newfabsize= fab_size;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            int ele = (int) Math.floor(parent_fab.getCompatElevation()/2);
+            newfabsize = (int) (fab_size - (metrics.density*(18+(6*ele))));
+            scale_by = (float) (peek_height * 2 / newfabsize)*metrics.density;
+
+        }
+
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(newfabsize, newfabsize);
+        lp.gravity = Gravity.CENTER;
         fabulous_fab.setLayoutParams(lp);
         fabulous_fab.setImageDrawable(fab_icon_resource);
         fabulous_fab.setBackgroundTintList(fab_background_color_resource);
+        Log.d("k9size", "newfabsize: "+newfabsize);
+        Log.d("k9size", "elevation: "+parent_fab.getCompatElevation());
 
 
     }
@@ -199,7 +213,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     private void fabAnim() {
         AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2), 0, -(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
         anim.setDuration(anim_duration);
-        fabulous_fab.startAnimation(anim);
+        fl.startAnimation(anim);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -296,7 +310,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                         to_y = (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))) + fab_outside_y_offest;
                         AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2)), from_y, to_y);
                         anim.setDuration(anim_duration);
-                        fabulous_fab.startAnimation(anim);
+                        fl.startAnimation(anim);
                         anim.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {

@@ -11,12 +11,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Created by krupenghetiya on 26/06/17.
  */
 
 public class AAH_FilterView extends FrameLayout {
+    FrameLayout fl;
     FloatingActionButton fab;
 
     public AAH_FilterView(@NonNull Context context) {
@@ -47,11 +49,18 @@ public class AAH_FilterView extends FrameLayout {
         return fab;
     }
 
+    public FrameLayout getFL() {
+        return fl;
+    }
 
     public void init() {
+        fl = new FrameLayout(getContext());
+        fl.setTag("aah_fl");
         fab = new FloatingActionButton(getContext());
         fab.setTag("aah_fab");
-        this.addView(fab);
+        fab.setCompatElevation(0);
+        fl.addView(fab);
+        this.addView(fl);
 
     }
 }

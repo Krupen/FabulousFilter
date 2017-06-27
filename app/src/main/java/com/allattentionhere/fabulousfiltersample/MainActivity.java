@@ -9,7 +9,6 @@ import android.view.View;
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
 
-import static com.allattentionhere.fabulousfiltersample.R.id.fab;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
 
