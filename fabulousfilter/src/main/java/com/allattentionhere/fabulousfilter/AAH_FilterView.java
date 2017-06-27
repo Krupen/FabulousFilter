@@ -10,8 +10,6 @@ import android.support.annotation.StyleRes;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 /**
  * Created by krupenghetiya on 26/06/17.
@@ -43,14 +41,6 @@ public class AAH_FilterView extends FrameLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
 
-    }
-
-    public FloatingActionButton getFab() {
-        return fab;
-    }
-
-    public FrameLayout getFL() {
-        return fl;
     }
 
     public void init() {

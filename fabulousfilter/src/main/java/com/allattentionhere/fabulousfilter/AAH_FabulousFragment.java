@@ -2,15 +2,12 @@ package com.allattentionhere.fabulousfilter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,20 +19,12 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-
-import static android.R.attr.animation;
-import static android.R.attr.fragment;
-import static android.R.attr.y;
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 
 /**
@@ -153,12 +142,10 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
             if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density)-(fab_size*metrics.density)) <= 0) {
-                Log.d("k9fix", "is_fab_outside_peekheight: true ");
                 is_fab_outside_peekheight = true;
                 mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                 fab_outside_y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
             } else {
-                Log.d("k9fix", "is_fab_outside_peekheight: false");
                 mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
             }
             contentView.requestLayout();
@@ -205,8 +192,6 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         fabulous_fab.setLayoutParams(lp);
         fabulous_fab.setImageDrawable(fab_icon_resource);
         fabulous_fab.setBackgroundTintList(fab_background_color_resource);
-        Log.d("k9size", "newfabsize: "+newfabsize);
-        Log.d("k9size", "elevation: "+parent_fab.getCompatElevation());
 
 
     }
