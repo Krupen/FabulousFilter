@@ -46,11 +46,11 @@ public class MyFabFragment extends AAH_FabulousFragment {
         });
 
         //params to set
-        setAnim_duration(1000); //optional; default 400ms
-        setPeek_height(300); // optional; default 400dp
+        setAnimationDuration(600); //optional; default 500ms
+        setPeekHeight(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
-        setViewgroup_static(ll_buttons); // optional; layout to stick at bottom on slide
-        setView_main(rl_content); //necessary; main bottomsheet view
+        setViewgroupStatic(ll_buttons); // optional; layout to stick at bottom on slide
+        setViewMain(rl_content); //necessary; main bottomsheet view
         setMainContentView(contentView);// necessary; call at end before super
         super.setupDialog(dialog, style);
 

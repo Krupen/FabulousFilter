@@ -34,5 +34,10 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     @Override
     public void onResult(Object result) {
         Log.d("aah", "onResult: " + result.toString());
+        if (result.toString().equalsIgnoreCase("swiped_down")){
+            //do something
+        }else {
+            //handle result
+        }
     }
 }

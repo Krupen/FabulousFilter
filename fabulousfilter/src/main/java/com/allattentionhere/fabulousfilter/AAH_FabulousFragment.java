@@ -2,7 +2,6 @@ package com.allattentionhere.fabulousfilter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +43,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
     //user params
     private int peek_height = 400;
-    private int anim_duration = 400;
+    private int anim_duration = 500;
     private FloatingActionButton fabulous_fab;
     private FrameLayout fl;
     private View view_main;
@@ -97,11 +96,6 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,7 +135,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         mBottomSheetBehavior = BottomSheetBehavior.from(((View) contentView.getParent()));
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
-            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density)-(fab_size*metrics.density)) <= 0) {
+            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density) - (fab_size * metrics.density)) <= 0) {
                 is_fab_outside_peekheight = true;
                 mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
                 fab_outside_y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
@@ -176,14 +170,14 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
             ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
-        scale_by = (float) (peek_height * 1.6 / fab_size)*metrics.density;
+        scale_by = (float) (peek_height * 1.6 / fab_size) * metrics.density;
         fabulous_fab = (FloatingActionButton) contentView.findViewWithTag("aah_fab");
         fl = (FrameLayout) contentView.findViewWithTag("aah_fl");
-        int newfabsize= fab_size;
+        int newfabsize = fab_size;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int ele = (int) Math.floor(parent_fab.getCompatElevation()/2);
-            newfabsize = (int) (fab_size - (metrics.density*(18+(6*ele))));
-            scale_by = (float) (peek_height * 2 / newfabsize)*metrics.density;
+            int ele = (int) Math.floor(parent_fab.getCompatElevation() / 2);
+            newfabsize = (int) (fab_size - (metrics.density * (18 + (6 * ele))));
+            scale_by = (float) (peek_height * 2 / newfabsize) * metrics.density;
 
         }
 
@@ -342,15 +336,15 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         void onResult(Object result);
     }
 
-    public void setPeek_height(int peek_height) {
+    public void setPeekHeight(int peek_height) {
         this.peek_height = peek_height;
     }
 
-    public void setView_main(View view_main) {
+    public void setViewMain(View view_main) {
         this.view_main = view_main;
     }
 
-    public void setViewgroup_static(View viewgroup_static) {
+    public void setViewgroupStatic(View viewgroup_static) {
         this.viewgroup_static = viewgroup_static;
     }
 
@@ -368,7 +362,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         this.parent_fab = parent_fab;
     }
 
-    public void setAnim_duration(int anim_duration) {
+    public void setAnimationDuration(int anim_duration) {
         this.anim_duration = anim_duration;
     }
 }
