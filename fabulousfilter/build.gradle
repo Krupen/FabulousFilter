@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/Krupen/FabulousFilter'
     gitUrl = 'https://github.com/Krupen/FabulousFilter.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.2'
 
     developerId = 'krupen'
     developerName = 'Krupen Ghetiya'
@@ -48,6 +48,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile "com.android.support:design:25.3.0"
+
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

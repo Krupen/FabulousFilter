@@ -33,5 +33,4 @@ dependencies {
     compile ('com.google.android:flexbox:0.2.7'){
         exclude group: 'com.android.support'
     }
-
 }

@@ -29,11 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import biz.laenger.android.vpbs.BottomSheetUtils;
 
 import static android.R.attr.key;
-import static com.allattentionhere.fabulousfiltersample.R.id.imgbtn_refresh;
-import static com.allattentionhere.fabulousfiltersample.R.id.nsv;
 
 
 /**
@@ -47,7 +44,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
     List<TextView> textviews = new ArrayList<>();
 
     TabLayout tabs_types;
-    ViewPager vp_types;
+
     ImageButton imgbtn_refresh,imgbtn_apply;
     SectionsPagerAdapter mAdapter;
     private DisplayMetrics metrics;
@@ -75,14 +72,19 @@ public class MyFabFragment extends AAH_FabulousFragment {
     }
 
     @Override
+
     public void setupDialog(Dialog dialog, int style) {
+
+
         View contentView = View.inflate(getContext(), R.layout.filter_view, null);
+
         RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
         LinearLayout ll_buttons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
         imgbtn_refresh = (ImageButton) contentView.findViewById(R.id.imgbtn_refresh);
         imgbtn_apply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
-        vp_types = (ViewPager) contentView.findViewById(R.id.vp_types);
+        ViewPager vp_types = (ViewPager) contentView.findViewById(R.id.vp_types);
         tabs_types = (TabLayout) contentView.findViewById(R.id.tabs_types);
+
         imgbtn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,13 +109,15 @@ public class MyFabFragment extends AAH_FabulousFragment {
         mAdapter.notifyDataSetChanged();
         tabs_types.setupWithViewPager(vp_types);
 
+
         //params to set
         setAnimationDuration(600); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
         setViewgroupStatic(ll_buttons); // optional; layout to stick at bottom on slide
         setViewMain(rl_content); //necessary; main bottomsheet view
-        setMainContentView(contentView);// necessary; call at end before super
+        setViewPager(vp_types); //optional; if you use viewpager that has scrollview
+        setMainContentView(contentView); // necessary; call at end before super
         super.setupDialog(dialog, style);
     }
 

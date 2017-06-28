@@ -13,11 +13,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -25,19 +25,24 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
+import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.BottomSheetUtils;
+import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomSheetBehavior;
+import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomSheetDialog;
+import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomSheetDialogFragment;
+
 
 /**
  * Created by krupenghetiya on 05/10/16.
  */
 
-public class AAH_FabulousFragment extends BottomSheetDialogFragment {
+public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
     private FloatingActionButton parent_fab;
     private DisplayMetrics metrics;
     private int fab_size = 56, fab_pos_y, fab_pos_x;
     private float scale_by = 12f;
     private FrameLayout bottomSheet;
-    private BottomSheetBehavior mBottomSheetBehavior;
+    private ViewPagerBottomSheetBehavior mBottomSheetBehavior;
     private int fab_outside_y_offest = 0;
     private boolean is_fab_outside_peekheight;
 
@@ -52,25 +57,26 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     private ColorStateList fab_background_color_resource;
     private View contentView;
     private Callbacks callbacks;
+    private ViewPager viewPager;
 
 
-    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
+    private ViewPagerBottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
 
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             switch (newState) {
-                case BottomSheetBehavior.STATE_HIDDEN:
+                case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
                     if (callbacks != null) {
                         callbacks.onResult("swiped_down");
                     }
                     dismiss();
                     break;
-                case BottomSheetBehavior.STATE_COLLAPSED:
+                case ViewPagerBottomSheetBehavior.STATE_COLLAPSED:
                     ViewGroup.LayoutParams params = view_main.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     view_main.setLayoutParams(params);
                     break;
-                case BottomSheetBehavior.STATE_EXPANDED:
+                case ViewPagerBottomSheetBehavior.STATE_EXPANDED:
                     ViewGroup.LayoutParams params1 = view_main.getLayoutParams();
                     params1.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     view_main.setLayoutParams(params1);
@@ -117,6 +123,10 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
+        if (viewPager != null) {
+            BottomSheetUtils.setupViewPager(viewPager);
+        }
+
         dialog.setContentView(contentView);
 
         int[] location = new int[2];
@@ -132,7 +142,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
 
         ((View) contentView.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(((View) contentView.getParent()));
+        mBottomSheetBehavior = ViewPagerBottomSheetBehavior.from(((View) contentView.getParent()));
         if (mBottomSheetBehavior != null) {
             mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
             if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density) - (fab_size * metrics.density)) <= 0) {
@@ -147,9 +157,9 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                ViewPagerBottomSheetDialog d = (ViewPagerBottomSheetDialog) dialog;
                 bottomSheet = (FrameLayout) d.findViewById(android.support.design.R.id.design_bottom_sheet);
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+                ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
                 if (viewgroup_static != null) {
                     int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
                     viewgroup_static.animate().translationY(-range).setDuration(0).start();
@@ -166,8 +176,8 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         CoordinatorLayout.Behavior behavior = params.getBehavior();
 
-        if (behavior != null && behavior instanceof BottomSheetBehavior) {
-            ((BottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
+        if (behavior != null && behavior instanceof ViewPagerBottomSheetBehavior) {
+            ((ViewPagerBottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
         }
 
         scale_by = (float) (peek_height * 1.6 / fab_size) * metrics.density;
@@ -214,7 +224,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                     @Override
                     public void run() {
                         mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
-                        BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
                         if (is_fab_outside_peekheight) {
                             bottomSheet.requestLayout();
                         }
@@ -263,8 +273,8 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     }
 
     public void closeFilter(final Object o) {
-        if (BottomSheetBehavior.from(bottomSheet).getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+        if (ViewPagerBottomSheetBehavior.from(bottomSheet).getState() == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
+            ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
         }
         fabulous_fab.setVisibility(View.VISIBLE);
         view_main.setVisibility(View.INVISIBLE);
@@ -279,7 +289,7 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
                         fabulous_fab.setImageDrawable(fab_icon_resource);
                         if (is_fab_outside_peekheight) {
                             mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
-                            BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
                             bottomSheet.requestLayout();
 //                            fabulous_fab.setY(fab_outside_y_offest - fab_pos_y + getStatusBarHeight(getContext()));
                         } else {
@@ -358,11 +368,15 @@ public class AAH_FabulousFragment extends BottomSheetDialogFragment {
     }
 
 
-    public void setParent_fab(FloatingActionButton parent_fab) {
+    public void setParentFab(FloatingActionButton parent_fab) {
         this.parent_fab = parent_fab;
     }
 
     public void setAnimationDuration(int anim_duration) {
         this.anim_duration = anim_duration;
+    }
+
+    public void setViewPager(ViewPager viewPager) {
+        this.viewPager = viewPager;
     }
 }

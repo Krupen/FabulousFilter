@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
             @Override
             public void onClick(View v) {
                 MyFabFragment dialogFrag = MyFabFragment.newInstance();
-                dialogFrag.setParent_fab(fab);
+                dialogFrag.setParentFab(fab);
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
