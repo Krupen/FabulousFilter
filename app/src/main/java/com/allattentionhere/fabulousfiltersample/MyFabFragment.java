@@ -9,10 +9,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,8 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import biz.laenger.android.vpbs.BottomSheetUtils;
+
 import static android.R.attr.key;
 import static com.allattentionhere.fabulousfiltersample.R.id.imgbtn_refresh;
+import static com.allattentionhere.fabulousfiltersample.R.id.nsv;
 
 
 /**
@@ -43,6 +50,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     ViewPager vp_types;
     ImageButton imgbtn_refresh,imgbtn_apply;
     SectionsPagerAdapter mAdapter;
+    private DisplayMetrics metrics;
+
 
 
     public static MyFabFragment newInstance() {
@@ -54,6 +63,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         applied_filters = ((MainActivity)getActivity()).getApplied_filters();
+        metrics = this.getResources().getDisplayMetrics();
+
         for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
             Log.d("k9res", "from activity: "+entry.getKey());
             for(String s: entry.getValue()){
@@ -104,7 +115,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
         setViewMain(rl_content); //necessary; main bottomsheet view
         setMainContentView(contentView);// necessary; call at end before super
         super.setupDialog(dialog, style);
-
     }
 
     public class SectionsPagerAdapter extends PagerAdapter {
@@ -114,6 +124,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.view_filters_sorters, collection, false);
             FlexboxLayout fbl = (FlexboxLayout) layout.findViewById(R.id.fbl);
+//            LinearLayout ll_scroll = (LinearLayout) layout.findViewById(R.id.ll_scroll);
+//            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (metrics.heightPixels-(104*metrics.density)));
+//            ll_scroll.setLayoutParams(lp);
             switch (position) {
                 case 0:
                     inflateLayoutWithFilters("genre", fbl);

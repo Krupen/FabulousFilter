@@ -15,6 +15,7 @@
         android:layout_marginRight="12dp"
         card_view:cardCornerRadius="0dp"
         card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="false"
         card_view:cardPreventCornerOverlap="false">
 
         <LinearLayout
@@ -50,57 +51,63 @@
 
                 <LinearLayout
                     android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:gravity="left"
-                        android:id="@+id/tv_genre"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        tools:text="genre" />
-
-                    <TextView
-                        android:gravity="left"
-                        android:id="@+id/tv_quality"
-                        android:textSize="14sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:gravity="left"
+                            android:id="@+id/tv_genre"
+                            android:layout_weight="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            tools:text="genre" />
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:gravity="left"
+                            android:id="@+id/tv_year"
+                            android:textSize="14sp"
+                            android:layout_weight="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            tools:text="year" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        tools:text="Quality" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:gravity="left"
+                            android:id="@+id/tv_quality"
+                            android:textSize="14sp"
+                            android:layout_weight="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            tools:text="Quality" />
+                        <TextView
+                            android:layout_marginTop="4dp"
+                            android:gravity="left"
+                            android:id="@+id/tv_rating"
+                            android:textSize="14sp"
+                            android:layout_weight="0.5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            tools:text="Rating" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:gravity="left"
-                        android:id="@+id/tv_year"
-                        android:textSize="14sp"
-                        android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        tools:text="year" />
-
-                    <TextView
-                        android:gravity="left"
-                        android:id="@+id/tv_rating"
-                        android:textSize="14sp"
-                        android:layout_weight="0.5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        tools:text="Rating" />
-                </LinearLayout>
 
             </LinearLayout>
 

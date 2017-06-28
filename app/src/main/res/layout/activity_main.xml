@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg">
+    android:background="@color/bgnew">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -11,6 +11,7 @@
         android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
+        android:tint="@color/filters_chips"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
