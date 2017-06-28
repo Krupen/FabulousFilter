@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.squareup.picasso.Picasso;
@@ -20,11 +21,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
 
-    FloatingActionButton fab;
+    FloatingActionButton fab,fab2;
     RecyclerView recyclerView;
     MovieData mData;
     MoviesAdapter mAdapter;
     Picasso p;
+    LinearLayout ll;
     List<SingleMovie> mList = new ArrayList<>();
     private ArrayMap<String, List<String>> applied_filters =new ArrayMap<>();
 
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        ll = (LinearLayout) findViewById(R.id.ll);
 
         mData = Util.getMovies();
          p = Picasso.with(this);
@@ -45,12 +49,30 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        if (getIntent().getIntExtra("fab",1)==2){
+            fab2.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+            ll.setVisibility(View.VISIBLE);
+        }else {
+            fab2.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+            ll.setVisibility(View.GONE);
+        }
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyFabFragment dialogFrag = MyFabFragment.newInstance();
                 dialogFrag.setParentFab(fab);
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
+        });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyFabFragment dialogFrag = MyFabFragment.newInstance();
+                dialogFrag.setParentFab(fab2);
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
