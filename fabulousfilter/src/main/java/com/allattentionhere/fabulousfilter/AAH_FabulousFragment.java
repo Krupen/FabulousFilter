@@ -11,10 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -63,7 +59,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     private ViewPagerBottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
 
         @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+        public void onStateChanged(  View bottomSheet, int newState) {
             switch (newState) {
                 case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
                     if (callbacks != null) {
@@ -86,7 +82,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
         }
 
         @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        public void onSlide(  View bottomSheet, float slideOffset) {
             if (viewgroup_static != null) {
                 int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
                 viewgroup_static.animate().translationY(-range + (range * slideOffset)).setDuration(0).start();
@@ -104,7 +100,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         metrics = this.getResources().getDisplayMetrics();
 
