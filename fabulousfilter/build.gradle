@@ -48,6 +48,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile "com.android.support:design:25.3.0"
+    compile "biz.laenger.android:vpbs:0.0.4"
 
 }
 
