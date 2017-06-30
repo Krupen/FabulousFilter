@@ -17,14 +17,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="BOTTOM FAB" />
+            android:text="BOTTOM FAB DEMO" />
 
         <Button
             android:id="@+id/btn_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="TOP FAB" />
+            android:layout_marginBottom="16dp"
+            android:text="TOP FAB DEMO" />
+
+        <Button
+            android:id="@+id/btn_understanding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="UNDERSTANDING VIEWS" />
     </LinearLayout>
 
 </FrameLayout>
