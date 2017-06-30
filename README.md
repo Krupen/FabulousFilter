@@ -1,6 +1,11 @@
 # FabulousFilter
 
-This library is the implementation of concept posted on <a href="https://material.uplabs.com/posts/filters-interface-resources" target="_blank">MaterialUp.com</a>.
+### Show some :heart: and star the repo to support the project
+[![GitHub stars](https://img.shields.io/github/stars/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/network) [![GitHub watchers](https://img.shields.io/github/watchers/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/watchers) [![GitHub followers](https://img.shields.io/github/followers/Krupen.svg?style=social)](https://github.com/Krupen/followers)  
+[![Twitter Follow](https://img.shields.io/twitter/follow/KrupenGhetiya.svg?style=social&label=Follow)](https://twitter.com/krupenghetiya)
+
+
+This library is the implementation of filter-concept posted on <a href="https://material.uplabs.com/posts/filters-interface-resources" target="_blank">MaterialUp.com</a>.
 
 It makes animation of FloatingActionButton to BottomSheetDialog easy to implement.
 
@@ -8,7 +13,7 @@ It makes animation of FloatingActionButton to BottomSheetDialog easy to implemen
 ![fabulousfilter concept](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/concept.gif)
 
 # Demo
-![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo1.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo2.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo3.gif)
+![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo2.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo3.gif)
 
 # Download
 **Gradle**
