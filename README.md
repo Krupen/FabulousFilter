@@ -5,7 +5,7 @@ This library is the implementation of concept posted on <a href="https://materia
 It makes animation of FloatingActionButton to BottomSheetDialog easy to implement.
 
 # Concept
-![fabulousfilter concept](https://assets.materialup.com/uploads/8ac88a60-47c6-4f62-b21e-0058834ed1dd/preview.gif)
+![fabulousfilter concept](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/concept.gif)
 
 
 # Download
