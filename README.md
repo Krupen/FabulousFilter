@@ -7,6 +7,8 @@ It makes animation of FloatingActionButton to BottomSheetDialog easy to implemen
 # Concept
 ![fabulousfilter concept](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/concept.gif)
 
+# Demo
+![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo1.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo2.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo3.gif)
 
 # Download
 **Gradle**
@@ -114,31 +116,31 @@ fab.setOnClickListener(new View.OnClickListener() {
 
 # Parameters
 
-### Main View (Required)
+* ### Main View (Required)
 This parameter specifies the ViewGroup of the bottom sheet to be shown after animation ends. It can be any ViewGroup(LinearLayout/FrameLayout etc):
 ```
 setViewMain(relativelayout_content);
 ```
 
-### Inflated Dialog View (Required)
+* ### Inflated Dialog View (Required)
 This parameter speicfies the inflated view for the dialog:
 ```
 setMainContentView(contentDialogView);
 ```
 
-### Animation duration (Optional)
+* ### Animation duration (Optional)
 This paramter sets animation duration of translate and scale animation in `milliseconds`:
 ```
 setAnimationDuration(600); // default 500ms
 ```
 
-### Peek Height (Optional)
+* ### Peek Height (Optional)
 This parameter sets the peek height of the bottom sheet in `dp`:
 ```
 setPeekHeight(300); // default 400dp
 ```
 
-### Callback (Optional)
+* ### Callback (Optional)
 This paramter is used to get callback from `AAH_FabulousFragment` to the component that called it:
 ```
 setCallbacks((Callbacks) getActivity());
@@ -165,13 +167,13 @@ public class MainSampleActivity extends AppCompatActivity implements AAH_Fabulou
 
 ```
 
-### Static View (Optional)
+* ### Static View (Optional)
 This parameter is used to make view in Bottom Sheet static when user slides it. It can be any ViewGroup(LinearLayout/FrameLayout etc):
 ```
 setViewgroupStatic(linearlayout_buttons);
 ```
 
-### ViewPager (Optional)
+* ### ViewPager (Optional)
 This parameter is used to support scrolling in ViewPager as BottomSheetDialog does not support multiple views with scroll:
 ```
 setViewPager(viewPager);
