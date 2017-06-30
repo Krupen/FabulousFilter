@@ -1,7 +1,12 @@
 # FabulousFilter
 
-This library is the implementation of the concept posted on <a href="https://material.uplabs.com/posts/filters-interface-resources" target="_blank">MaterialUp.com</a> 
-It makes Animation of FloatingActionButton to BottomSheetDialog easy.
+This library is the implementation of concept posted on <a href="https://material.uplabs.com/posts/filters-interface-resources" target="_blank">MaterialUp.com</a>.
+
+It makes animation of FloatingActionButton to BottomSheetDialog easy to implement.
+
+# Concept
+![fabulousfilter concept](https://assets.materialup.com/uploads/8ac88a60-47c6-4f62-b21e-0058834ed1dd/preview.gif)
+
 
 # Download
 **Gradle**
