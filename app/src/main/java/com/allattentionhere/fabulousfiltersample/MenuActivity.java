@@ -11,7 +11,7 @@ import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
 import static com.allattentionhere.fabulousfiltersample.R.id.fab;
 
-public class MenuActivity extends AppCompatActivity  {
+public class MenuActivity extends AppCompatActivity {
 
 
     @Override
@@ -22,8 +22,8 @@ public class MenuActivity extends AppCompatActivity  {
         findViewById(R.id.btn_bottom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this,MainActivity.class);
-                i.putExtra("fab",1);
+                Intent i = new Intent(MenuActivity.this, MainActivity.class);
+                i.putExtra("fab", 1);
                 startActivity(i);
             }
         });
@@ -31,8 +31,8 @@ public class MenuActivity extends AppCompatActivity  {
         findViewById(R.id.btn_top).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this,MainActivity.class);
-                i.putExtra("fab",2);
+                Intent i = new Intent(MenuActivity.this, MainActivity.class);
+                i.putExtra("fab", 2);
                 startActivity(i);
             }
         });
@@ -40,7 +40,15 @@ public class MenuActivity extends AppCompatActivity  {
         findViewById(R.id.btn_understanding).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this,MainSampleActivity.class);
+                Intent i = new Intent(MenuActivity.this, MainSampleActivity.class);
+                startActivity(i);
+            }
+        });
+
+        findViewById(R.id.btn_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MenuActivity.this, FragmentExampleActivity.class);
                 startActivity(i);
             }
         });
