@@ -14,7 +14,7 @@ It makes animation of FloatingActionButton to BottomSheetDialog easy to implemen
 ![fabulousfilter concept](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/concept.gif)
 
 # Demo
-![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo2.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/demo3.gif)
+![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/newDemo1.gif)  ![fabulousfilter demo 1](https://raw.githubusercontent.com/Krupen/FabulousFilter/master/newDemo2.gif)
 
 # Download
 **Gradle**
