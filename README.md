@@ -1,4 +1,5 @@
 # FabulousFilter
+[![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg)](https://android-arsenal.com/api?level=16) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FabulousFilter-2CB3E5.svg)]
 
 ### Show some :heart: and star the repo to support the project
 [![GitHub stars](https://img.shields.io/github/stars/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/network) [![GitHub watchers](https://img.shields.io/github/watchers/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/watchers) [![GitHub followers](https://img.shields.io/github/followers/Krupen.svg?style=social)](https://github.com/Krupen/followers)  
