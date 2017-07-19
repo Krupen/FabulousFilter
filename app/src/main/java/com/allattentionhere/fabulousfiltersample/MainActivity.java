@@ -1,5 +1,6 @@
 package com.allattentionhere.fabulousfiltersample;
 
+import android.content.res.Configuration;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
@@ -21,15 +22,15 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
 
-    FloatingActionButton fab,fab2;
+    FloatingActionButton fab, fab2;
     RecyclerView recyclerView;
     MovieData mData;
     MoviesAdapter mAdapter;
     Picasso p;
     LinearLayout ll;
     List<SingleMovie> mList = new ArrayList<>();
-    private ArrayMap<String, List<String>> applied_filters =new ArrayMap<>();
-
+    private ArrayMap<String, List<String>> applied_filters = new ArrayMap<>();
+    MyFabFragment dialogFrag, dialogFrag1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,38 +42,40 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         ll = (LinearLayout) findViewById(R.id.ll);
 
         mData = Util.getMovies();
-         p = Picasso.with(this);
+        p = Picasso.with(this);
         mList.addAll(mData.getAllMovies());
-         mAdapter = new MoviesAdapter(mList, p, MainActivity.this);
+        mAdapter = new MoviesAdapter(mList, p, MainActivity.this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        if (getIntent().getIntExtra("fab",1)==2){
+        if (getIntent().getIntExtra("fab", 1) == 2) {
             fab2.setVisibility(View.VISIBLE);
             fab.setVisibility(View.GONE);
             ll.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             fab2.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
             ll.setVisibility(View.GONE);
         }
 
-
+        dialogFrag1 = MyFabFragment.newInstance();
+        dialogFrag1.setParentFab(fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyFabFragment dialogFrag = MyFabFragment.newInstance();
-                dialogFrag.setParentFab(fab);
-                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+
+                dialogFrag1.show(getSupportFragmentManager(), dialogFrag1.getTag());
             }
         });
+
+        dialogFrag = MyFabFragment.newInstance();
+        dialogFrag.setParentFab(fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyFabFragment dialogFrag = MyFabFragment.newInstance();
-                dialogFrag.setParentFab(fab2);
+
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                     List<SingleMovie> filteredList = mData.getAllMovies();
                     //iterate over arraymap
                     for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
-                        Log.d("k9res", "entry.key: "+entry.getKey());
+                        Log.d("k9res", "entry.key: " + entry.getKey());
                         switch (entry.getKey()) {
                             case "genre":
                                 filteredList = mData.getGenreFilteredMovies(entry.getValue(), filteredList);
@@ -107,12 +110,12 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                                 break;
                         }
                     }
-                    Log.d("k9res", "new size: "+filteredList.size());
+                    Log.d("k9res", "new size: " + filteredList.size());
                     mList.clear();
                     mList.addAll(filteredList);
                     mAdapter.notifyDataSetChanged();
 
-                }else {
+                } else {
                     mList.addAll(mData.getAllMovies());
                     mAdapter.notifyDataSetChanged();
                 }
@@ -127,5 +130,19 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
     public MovieData getmData() {
         return mData;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (dialogFrag.isAdded()) {
+            dialogFrag.dismiss();
+            dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+        }
+        if (dialogFrag1.isAdded()) {
+            dialogFrag1.dismiss();
+            dialogFrag1.show(getSupportFragmentManager(), dialogFrag1.getTag());
+        }
+
     }
 }

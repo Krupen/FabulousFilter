@@ -1,5 +1,6 @@
 package com.allattentionhere.fabulousfiltersample;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
 
 public class ExampleFragment extends Fragment implements AAH_FabulousFragment.Callbacks {
+    MySampleFabFragment dialogFrag;
 
     public static ExampleFragment newInstance() {
         ExampleFragment fragment = new ExampleFragment();
@@ -26,14 +28,14 @@ public class ExampleFragment extends Fragment implements AAH_FabulousFragment.Ca
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_example, container, false);
-            // Log.d("k9crash", "result not null: ");
+        // Log.d("k9crash", "result not null: ");
         final FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-
+        dialogFrag = MySampleFabFragment.newInstance();
+        dialogFrag.setParentFab(fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySampleFabFragment dialogFrag = MySampleFabFragment.newInstance();
-                dialogFrag.setParentFab(fab);
+
                 dialogFrag.setCallbacks(ExampleFragment.this);
                 dialogFrag.show(getActivity().getSupportFragmentManager(), dialogFrag.getTag());
             }
@@ -49,5 +51,15 @@ public class ExampleFragment extends Fragment implements AAH_FabulousFragment.Ca
         } else {
             //handle result
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (dialogFrag.isAdded()) {
+            dialogFrag.dismiss();
+            dialogFrag.show(getActivity().getSupportFragmentManager(), dialogFrag.getTag());
+        }
+
     }
 }

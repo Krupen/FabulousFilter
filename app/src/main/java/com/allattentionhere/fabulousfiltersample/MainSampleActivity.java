@@ -1,5 +1,6 @@
 package com.allattentionhere.fabulousfiltersample;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
@@ -26,6 +27,7 @@ import static com.allattentionhere.fabulousfiltersample.R.id.recyclerView;
 public class MainSampleActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
 
     FloatingActionButton fab;
+    MySampleFabFragment dialogFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +35,12 @@ public class MainSampleActivity extends AppCompatActivity implements AAH_Fabulou
         setContentView(R.layout.activity_main_sample);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-
-
+        dialogFrag = MySampleFabFragment.newInstance();
+        dialogFrag.setParentFab(fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySampleFabFragment dialogFrag = MySampleFabFragment.newInstance();
-                dialogFrag.setParentFab(fab);
+
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
@@ -55,6 +56,16 @@ public class MainSampleActivity extends AppCompatActivity implements AAH_Fabulou
         } else {
             //handle result
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (dialogFrag.isAdded()) {
+            dialogFrag.dismiss();
+            dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+        }
+
     }
 
 
