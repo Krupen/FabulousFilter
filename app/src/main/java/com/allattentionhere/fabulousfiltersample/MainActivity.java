@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
+public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener {
 
     FloatingActionButton fab, fab2;
     RecyclerView recyclerView;
@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialogFrag1.show(getSupportFragmentManager(), dialogFrag1.getTag());
             }
         });
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
@@ -143,6 +141,29 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
             dialogFrag1.dismiss();
             dialogFrag1.show(getSupportFragmentManager(), dialogFrag1.getTag());
         }
+
+    }
+
+    @Override
+    public void onOpenAnimationStart() {
+        Log.d("aah_animation", "onOpenAnimationStart: ");
+    }
+
+    @Override
+    public void onOpenAnimationEnd() {
+        Log.d("aah_animation", "onOpenAnimationEnd: ");
+
+    }
+
+    @Override
+    public void onCloseAnimationStart() {
+        Log.d("aah_animation", "onCloseAnimationStart: ");
+
+    }
+
+    @Override
+    public void onCloseAnimationEnd() {
+        Log.d("aah_animation", "onCloseAnimationEnd: ");
 
     }
 }

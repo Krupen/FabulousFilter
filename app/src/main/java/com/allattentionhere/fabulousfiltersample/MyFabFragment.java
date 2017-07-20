@@ -45,10 +45,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
     TabLayout tabs_types;
 
-    ImageButton imgbtn_refresh,imgbtn_apply;
+    ImageButton imgbtn_refresh, imgbtn_apply;
     SectionsPagerAdapter mAdapter;
     private DisplayMetrics metrics;
-
 
 
     public static MyFabFragment newInstance() {
@@ -59,13 +58,13 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        applied_filters = ((MainActivity)getActivity()).getApplied_filters();
+        applied_filters = ((MainActivity) getActivity()).getApplied_filters();
         metrics = this.getResources().getDisplayMetrics();
 
         for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
-            Log.d("k9res", "from activity: "+entry.getKey());
-            for(String s: entry.getValue()){
-                Log.d("k9res", "from activity val: "+s);
+            Log.d("k9res", "from activity: " + entry.getKey());
+            for (String s : entry.getValue()) {
+                Log.d("k9res", "from activity val: " + s);
 
             }
         }
@@ -112,6 +111,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         setAnimationDuration(600); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
+        setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
         setViewgroupStatic(ll_buttons); // optional; layout to stick at bottom on slide
         setViewPager(vp_types); //optional; if you use viewpager that has scrollview
         setViewMain(rl_content); //necessary; main bottomsheet view
@@ -160,7 +160,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return "GENRE";
                 case 1:
@@ -225,7 +225,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 Log.d("k9res", "applied_filters != null: " + (applied_filters != null));
                 Log.d("k9res", "applied_filters.get(key) != null: " + (applied_filters.get(filter_category) != null));
                 Log.d("k9res", "applied_filters.get(key).contains(keys.get(finalI)): " + (applied_filters.get(filter_category).contains(keys.get(finalI))));
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             if (applied_filters != null && applied_filters.get(filter_category) != null && applied_filters.get(filter_category).contains(keys.get(finalI))) {

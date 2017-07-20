@@ -53,13 +53,14 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     private ColorStateList fab_background_color_resource;
     private View contentView;
     private Callbacks callbacks;
+    private AnimationListener animationListener;
     private ViewPager viewPager;
 
 
     private ViewPagerBottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
 
         @Override
-        public void onStateChanged(  View bottomSheet, int newState) {
+        public void onStateChanged(View bottomSheet, int newState) {
             switch (newState) {
                 case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
                     if (callbacks != null) {
@@ -82,7 +83,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
         }
 
         @Override
-        public void onSlide(  View bottomSheet, float slideOffset) {
+        public void onSlide(View bottomSheet, float slideOffset) {
             if (viewgroup_static != null) {
                 int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
                 viewgroup_static.animate().translationY(-range + (range * slideOffset)).setDuration(0).start();
@@ -100,7 +101,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         metrics = this.getResources().getDisplayMetrics();
 
@@ -198,6 +199,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
 
     private void fabAnim() {
+        if (animationListener != null) animationListener.onOpenAnimationStart();
         AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2), 0, -(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
         anim.setDuration(anim_duration);
         fl.startAnimation(anim);
@@ -249,6 +251,9 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                                                         fabulous_fab.animate().setListener(null);
                                                         fabulous_fab.setVisibility(View.GONE);
                                                         view_main.setVisibility(View.VISIBLE);
+                                                        if (animationListener != null)
+                                                            animationListener.onOpenAnimationEnd();
+
                                                     }
                                                 });
 
@@ -269,6 +274,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     }
 
     public void closeFilter(final Object o) {
+        if (animationListener != null) animationListener.onCloseAnimationStart();
         if (ViewPagerBottomSheetBehavior.from(bottomSheet).getState() == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
             ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
         }
@@ -313,6 +319,8 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                                     @Override
                                     public void run() {
                                         //Do something after 100ms
+                                        if (animationListener != null)
+                                            animationListener.onCloseAnimationEnd();
                                         if (callbacks != null) {
                                             callbacks.onResult(o);
                                         }
@@ -342,6 +350,16 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
         void onResult(Object result);
     }
 
+    public interface AnimationListener {
+        void onOpenAnimationStart();
+
+        void onOpenAnimationEnd();
+
+        void onCloseAnimationStart();
+
+        void onCloseAnimationEnd();
+    }
+
     public void setPeekHeight(int peek_height) {
         this.peek_height = peek_height;
     }
@@ -363,6 +381,9 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
         this.callbacks = callbacks;
     }
 
+    public void setAnimationListener(AnimationListener animationListener) {
+        this.animationListener = animationListener;
+    }
 
     public void setParentFab(FloatingActionButton parent_fab) {
         this.parent_fab = parent_fab;
