@@ -181,7 +181,7 @@ setAnimationListener((AnimationListener) getActivity());
 ```
 To use it, implement the AnimationListener in the calling component(Activity/Fragment etc), example:
 ```
-public class MainSampleActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {
+public class MainSampleActivity extends AppCompatActivity implements AAH_FabulousFragment.AnimationListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
