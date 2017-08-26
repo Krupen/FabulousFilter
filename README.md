@@ -33,7 +33,7 @@ allprojects {
 
 ``` groovy
 dependencies {
-	 compile 'com.allattentionhere:fabulousfilter:0.0.2'
+	 compile 'com.allattentionhere:fabulousfilter:0.0.3'
 }
 ```
 
@@ -65,6 +65,7 @@ public class MySampleFabFragment extends AAH_FabulousFragment {
         setAnimationDuration(600); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
+	setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
         setViewgroupStatic(ll_buttons); // optional; layout to stick at bottom on slide
         setViewPager(vp_types); //optional; if you use viewpager that has scrollview
         setViewMain(rl_content); //necessary; main bottomsheet view
@@ -168,6 +169,43 @@ public class MainSampleActivity extends AppCompatActivity implements AAH_Fabulou
         } else {
             //handle result
         }
+    }
+}
+
+```
+
+* ### Animation Listener (Optional)
+This parameter is used to get animation callbacks.
+```
+setAnimationListener((AnimationListener) getActivity());
+```
+To use it, implement the AnimationListener in the calling component(Activity/Fragment etc), example:
+```
+public class MainSampleActivity extends AppCompatActivity implements AAH_FabulousFragment.AnimationListener {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_sample);
+    }
+    
+   @Override
+    public void onOpenAnimationStart() {
+        //do something on open animation start
+    }
+
+    @Override
+    public void onOpenAnimationEnd() {
+        //do something on open animation end
+    }
+
+    @Override
+    public void onCloseAnimationStart() {
+        //do something on close animation start
+    }
+
+    @Override
+    public void onCloseAnimationEnd() {
+        //do something on close animation start
     }
 }
 
