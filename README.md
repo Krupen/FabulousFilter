@@ -1,5 +1,5 @@
 # FabulousFilter
-[![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg)](https://android-arsenal.com/api?level=16) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FabulousFilter-2CB3E5.svg)]( https://android-arsenal.com/details/1/5943) [![Material Up](https://img.shields.io/badge/MaterialUp-FabulousFilter-2856b6.svg)](https://material.uplabs.com/posts/fabulousfilter-library)
+[![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg)](https://android-arsenal.com/api?level=15) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FabulousFilter-2CB3E5.svg)]( https://android-arsenal.com/details/1/5943) [![Material Up](https://img.shields.io/badge/MaterialUp-FabulousFilter-2856b6.svg)](https://material.uplabs.com/posts/fabulousfilter-library)
 
 ### Show some :heart: and star the repo to support the project
 [![GitHub stars](https://img.shields.io/github/stars/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/network) [![GitHub watchers](https://img.shields.io/github/watchers/Krupen/FabulousFilter.svg?style=social)](https://github.com/Krupen/FabulousFilter/watchers) [![GitHub followers](https://img.shields.io/github/followers/Krupen.svg?style=social)](https://github.com/Krupen/followers)  
@@ -33,7 +33,7 @@ allprojects {
 
 ``` groovy
 dependencies {
-	 compile 'com.allattentionhere:fabulousfilter:0.0.3'
+	 compile 'com.allattentionhere:fabulousfilter:0.0.4'
 }
 ```
 
@@ -222,7 +222,7 @@ This parameter is used to support scrolling in ViewPager as BottomSheetDialog do
 ```
 setViewPager(viewPager);
 ```
-# Our other libraries
+# Libraries by developer
 * <a href="https://github.com/Krupen/AutoplayVideos" target="_blank">AutoplayVideos</a>
 
 # Apps by developer
