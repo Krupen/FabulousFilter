@@ -46,7 +46,6 @@ import com.allattentionhere.fabulousfilter.R;
 import java.lang.ref.WeakReference;
 
 
-
 public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
     /**
@@ -54,10 +53,10 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
      */
     public abstract static class BottomSheetCallback {
 
-        public abstract void onStateChanged(  View bottomSheet,  int newState);
+        public abstract void onStateChanged(View bottomSheet, int newState);
 
 
-        public abstract void onSlide(  View bottomSheet, float slideOffset);
+        public abstract void onSlide(View bottomSheet, float slideOffset);
     }
 
     /**
@@ -79,7 +78,8 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
 
     public static final int STATE_HIDDEN = 5;
 
-    public @interface State {}
+    public @interface State {
+    }
 
 
     public static final int PEEK_HEIGHT_AUTO = -1;
@@ -271,6 +271,9 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
         if (mState == STATE_DRAGGING && action == MotionEvent.ACTION_DOWN) {
             return true;
         }
+        if (mViewDragHelper == null) {
+            mViewDragHelper = ViewDragHelper.create(parent, mDragCallback);
+        }
         mViewDragHelper.processTouchEvent(event);
         // Record the velocity
         if (action == MotionEvent.ACTION_DOWN) {
@@ -441,7 +444,7 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
     }
 
 
-    public final void setState(final  int state) {
+    public final void setState(final int state) {
         if (state == mState) {
             return;
         }
@@ -476,7 +479,7 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
         return mState;
     }
 
-    void setStateInternal( int state) {
+    void setStateInternal(int state) {
         if (mState == state) {
             return;
         }
@@ -587,7 +590,7 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             int top;
-             int targetState;
+            int targetState;
             if (yvel < 0) { // Moving up
                 top = mMinOffset;
                 targetState = STATE_EXPANDED;
@@ -665,7 +668,7 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
 
         private final int mTargetState;
 
-        SettleRunnable(View view,  int targetState) {
+        SettleRunnable(View view, int targetState) {
             mView = view;
             mTargetState = targetState;
         }
@@ -694,7 +697,7 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
             state = source.readInt();
         }
 
-        public SavedState(Parcelable superState,  int state) {
+        public SavedState(Parcelable superState, int state) {
             super(superState);
             this.state = state;
         }
