@@ -33,7 +33,7 @@ allprojects {
 
 ``` groovy
 dependencies {
-	 compile 'com.allattentionhere:fabulousfilter:0.0.4'
+	 compile 'com.allattentionhere:fabulousfilter:0.0.5'
 }
 ```
 
