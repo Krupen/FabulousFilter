@@ -130,13 +130,13 @@ setViewMain(relativelayout_content);
 ```
 
 * ### Inflated Dialog View (Required)
-This parameter speicfies the inflated view for the dialog:
+This parameter specifies the inflated view for the dialog:
 ```
 setMainContentView(contentDialogView);
 ```
 
 * ### Animation duration (Optional)
-This paramter sets animation duration of translate and scale animation in `milliseconds`:
+This parameter sets animation duration of translate and scale animation in `milliseconds`:
 ```
 setAnimationDuration(600); // default 500ms
 ```
