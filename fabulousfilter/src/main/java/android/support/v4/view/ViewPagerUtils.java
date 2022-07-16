@@ -1,6 +1,8 @@
-package android.support.v4.view;
+package androidx.core.view;
 
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 public class ViewPagerUtils {
 
@@ -9,7 +11,7 @@ public class ViewPagerUtils {
         for (int i = 0; i < viewPager.getChildCount(); i++) {
             final View child = viewPager.getChildAt(i);
             final ViewPager.LayoutParams layoutParams = (ViewPager.LayoutParams) child.getLayoutParams();
-            if (!layoutParams.isDecor && currentItem == layoutParams.position) {
+            if (!layoutParams.isDecor && currentItem == viewPager.getCurrentItem()) {
                 return child;
             }
         }

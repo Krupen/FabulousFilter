@@ -3,7 +3,7 @@ package com.allattentionhere.fabulousfilter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 

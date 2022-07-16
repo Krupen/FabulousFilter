@@ -21,12 +21,12 @@
     </LinearLayout>
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/ll"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_below="@+id/ll"
         android:layout_marginTop="-24dp"
         android:layout_marginRight="16dp"
@@ -39,7 +39,7 @@
         app:backgroundTint="@color/filtersfab"
         app:elevation="0dp" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:tint="@color/filters_chips"
         android:id="@+id/fab"
         android:layout_width="56dp"
