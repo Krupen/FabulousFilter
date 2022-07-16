@@ -1,16 +1,13 @@
 package com.allattentionhere.fabulousfiltersample;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
-
-import static com.allattentionhere.fabulousfiltersample.R.id.fab;
 
 
 public class FragmentExampleActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks {

@@ -26,15 +26,12 @@ ext {
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
     buildTypes {
@@ -46,12 +43,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.0'
-    compile "com.android.support:design:27.0.0"
-    compile 'com.android.support:support-v4:27.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 
