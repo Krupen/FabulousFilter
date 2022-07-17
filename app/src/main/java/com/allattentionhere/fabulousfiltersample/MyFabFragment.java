@@ -57,13 +57,12 @@ public class MyFabFragment extends AAH_FabulousFragment {
         applied_filters = ((MainActivity) getActivity()).getApplied_filters();
         metrics = this.getResources().getDisplayMetrics();
 
-        for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
-            Log.d("k9res", "from activity: " + entry.getKey());
-            for (String s : entry.getValue()) {
-                Log.d("k9res", "from activity val: " + s);
-
-            }
-        }
+//        for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
+//            for (String s : entry.getValue()) {
+//                Log.d("k9res", "from activity val: " + s);
+//
+//            }
+//        }
     }
 
     @Override
@@ -216,14 +215,14 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     }
                 }
             });
-            try {
-                Log.d("k9res", "key: " + filter_category + " |val:" + keys.get(finalI));
-                Log.d("k9res", "applied_filters != null: " + (applied_filters != null));
-                Log.d("k9res", "applied_filters.get(key) != null: " + (applied_filters.get(filter_category) != null));
-                Log.d("k9res", "applied_filters.get(key).contains(keys.get(finalI)): " + (applied_filters.get(filter_category).contains(keys.get(finalI))));
-            } catch (Exception e) {
-
-            }
+//            try {
+//                Log.d("k9res", "key: " + filter_category + " |val:" + keys.get(finalI));
+//                Log.d("k9res", "applied_filters != null: " + (applied_filters != null));
+//                Log.d("k9res", "applied_filters.get(key) != null: " + (applied_filters.get(filter_category) != null));
+//                Log.d("k9res", "applied_filters.get(key).contains(keys.get(finalI)): " + (applied_filters.get(filter_category).contains(keys.get(finalI))));
+//            } catch (Exception e) {
+//
+//            }
             if (applied_filters != null && applied_filters.get(filter_category) != null && applied_filters.get(filter_category).contains(keys.get(finalI))) {
                 tv.setTag("selected");
                 tv.setBackgroundResource(R.drawable.chip_selected);

@@ -45,7 +45,7 @@ public class ExampleFragment extends Fragment implements AAH_FabulousFragment.Ca
 
     @Override
     public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
+//        Log.d("k9res", "onResult: " + result.toString());
         if (result.toString().equalsIgnoreCase("swiped_down")) {
             //do something or nothing
         } else {

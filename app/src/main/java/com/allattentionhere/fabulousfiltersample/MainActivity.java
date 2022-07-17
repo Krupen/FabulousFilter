@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
     @Override
     public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
+//        Log.d("k9res", "onResult: " + result.toString());
         if (result.toString().equalsIgnoreCase("swiped_down")) {
             //do something or nothing
         } else {
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                     List<SingleMovie> filteredList = mData.getAllMovies();
                     //iterate over arraymap
                     for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
-                        Log.d("k9res", "entry.key: " + entry.getKey());
+//                        Log.d("k9res", "entry.key: " + entry.getKey());
                         switch (entry.getKey()) {
                             case "genre":
                                 filteredList = mData.getGenreFilteredMovies(entry.getValue(), filteredList);
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                                 break;
                         }
                     }
-                    Log.d("k9res", "new size: " + filteredList.size());
+//                    Log.d("k9res", "new size: " + filteredList.size());
                     mList.clear();
                     mList.addAll(filteredList);
                     mAdapter.notifyDataSetChanged();

@@ -29,7 +29,7 @@ public class FragmentExampleActivity extends AppCompatActivity implements AAH_Fa
 
     @Override
     public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
+//        Log.d("k9res", "onResult: " + result.toString());
         if (result.toString().equalsIgnoreCase("swiped_down")) {
             //do something or nothing
         } else {

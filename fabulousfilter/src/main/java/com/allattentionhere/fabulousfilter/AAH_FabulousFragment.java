@@ -6,7 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,9 +17,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.viewpager.widget.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
@@ -85,8 +90,9 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
         @Override
         public void onSlide(View bottomSheet, float slideOffset) {
             if (viewgroup_static != null) {
-                int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
-                viewgroup_static.animate().translationY(-range + (range * slideOffset)).setDuration(0).start();
+                int height = getScreenHeightExcludingTopBottomBar(getContext());
+                int range = (int) (height - (metrics.density * peek_height));
+                viewgroup_static.setTranslationY(-range + (range * slideOffset));
             }
         }
     };
@@ -107,15 +113,33 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
     }
 
-    public static int getStatusBarHeight(final Context context) {
-        final Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0)
-            return resources.getDimensionPixelSize(resourceId);
-        else
-            return (int) Math.ceil((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25) * resources.getDisplayMetrics().density);
-    }
 
+
+    public int getScreenHeightExcludingTopBottomBar(Context context) {
+        WindowManager wm = ((WindowManager)
+                context.getSystemService(Context.WINDOW_SERVICE));
+        Display display = wm.getDefaultDisplay();
+        Point screenSize = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealSize(screenSize);
+        } else {
+            display.getSize(screenSize);
+        }
+        Resources resources = context.getResources();
+        int navBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        int bottomBarHeight = 0;
+        if (navBarResourceId > 0) {
+            bottomBarHeight = resources.getDimensionPixelSize(navBarResourceId);
+        }
+        final int statusBarResourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int topBarHeight;
+        if (statusBarResourceId > 0){
+            topBarHeight = resources.getDimensionPixelSize(statusBarResourceId);
+        }
+        else
+            topBarHeight = (int) Math.ceil((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25) * metrics.density);
+        return screenSize.y - topBarHeight - bottomBarHeight;
+    }
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
@@ -158,8 +182,10 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                 bottomSheet = (FrameLayout) d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                 ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
                 if (viewgroup_static != null) {
-                    int range = (int) (metrics.heightPixels - (metrics.density * peek_height) - getStatusBarHeight(getContext()));
-                    viewgroup_static.animate().translationY(-range).setDuration(0).start();
+                    int height = getScreenHeightExcludingTopBottomBar(getContext());
+                    int range = (int) (height - (metrics.density * peek_height)) ;
+
+                    viewgroup_static.setTranslationY(-range);
                 }
                 int fab_range_y = (int) (fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)));
                 fabulous_fab.setY(fab_range_y + fab_outside_y_offest);
