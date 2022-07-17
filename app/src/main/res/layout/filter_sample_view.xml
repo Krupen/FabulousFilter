@@ -15,6 +15,13 @@
         tools:ignore="MissingPrefix"
         tools:visibility="visible">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:background="@color/filters_buttons"
+            />
+
         <Button
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
