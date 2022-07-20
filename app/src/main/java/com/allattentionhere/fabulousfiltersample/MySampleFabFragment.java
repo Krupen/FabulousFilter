@@ -2,6 +2,7 @@ package com.allattentionhere.fabulousfiltersample;
 
 import android.app.Dialog;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -28,7 +29,7 @@ public class MySampleFabFragment extends AAH_FabulousFragment {
 
     @Override
 
-    public void setupDialog(Dialog dialog, int style) {
+    public void setupDialog(@NonNull Dialog dialog, int style) {
         View contentView = View.inflate(getContext(), R.layout.filter_sample_view, null);
 
         RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);

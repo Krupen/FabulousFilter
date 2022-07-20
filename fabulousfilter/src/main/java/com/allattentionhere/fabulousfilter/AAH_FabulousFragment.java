@@ -2,11 +2,11 @@ package com.allattentionhere.fabulousfilter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -22,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -36,412 +35,429 @@ import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomS
 import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomSheetDialog;
 import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomSheetDialogFragment;
 
-
-/**
- * Created by krupenghetiya on 05/10/16.
- */
-
+/** Created by krupenghetiya on 05/10/16. */
 public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
-    private FloatingActionButton parent_fab;
-    @NonNull
-    private DisplayMetrics metrics;
-    private int fab_size = 56, fab_pos_y, fab_pos_x;
-    private float scale_by = 12f;
-    private FrameLayout bottomSheet;
-    private ViewPagerBottomSheetBehavior mBottomSheetBehavior;
-    private int fab_outside_y_offest = 0;
-    private boolean is_fab_outside_peekheight;
+  private int fabSize = 56, fabPosY, fabPosX;
+  private float scaleBy = 12f;
+  private int fabOutsideYOffset = 0;
+  private boolean isFabOutsidePeekheight;
+  private FloatingActionButton parentFab;
+  @NonNull private DisplayMetrics metrics;
+  private FrameLayout bottomSheet;
+  private ViewPagerBottomSheetBehavior bottomSheetBehavior;
 
-    //user params
-    private int screenHeight, screenHeightIncludingBottomBar;
-    private int peek_height = 400;
-    private int anim_duration = 500;
-    private FloatingActionButton fabulous_fab;
-    private FrameLayout fl;
-    private View view_main;
-    private View viewgroup_static;
-    private Drawable fab_icon_resource;
-    private ColorStateList fab_background_color_resource;
-    private View contentView;
-    private Callbacks callbacks;
-    private AnimationListener animationListener;
-    private ViewPager viewPager;
+  // user params
+  private int screenHeight, screenHeightIncludingBottomBar;
+  private int peekHeight = 400;
+  private int animDuration = 500;
+  private FloatingActionButton fabulousFab;
+  private FrameLayout frameLayout;
+  private View viewMain;
+  private View viewGroupStatic;
+  private Drawable fabIconResource;
+  private View contentView;
+  private Callbacks callbacks;
+  private AnimationListener animationListener;
+  private ViewPager viewPager;
 
-
-    private ViewPagerBottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
+  private final ViewPagerBottomSheetBehavior.BottomSheetCallback bottomSheetBehaviorCallback =
+      new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
 
         @Override
         public void onStateChanged(View bottomSheet, int newState) {
-            switch (newState) {
-                case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
-                    if (callbacks != null) {
-                        callbacks.onResult("swiped_down");
-                    }
-                    dismiss();
-                    break;
-                case ViewPagerBottomSheetBehavior.STATE_COLLAPSED:
-                    ViewGroup.LayoutParams params = view_main.getLayoutParams();
-                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    view_main.setLayoutParams(params);
-                    break;
-                case ViewPagerBottomSheetBehavior.STATE_EXPANDED:
-                    ViewGroup.LayoutParams params1 = view_main.getLayoutParams();
-                    params1.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    view_main.setLayoutParams(params1);
-                    break;
-            }
-
+          switch (newState) {
+            case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
+              if (callbacks != null) {
+                callbacks.onResult("swiped_down");
+              }
+              dismiss();
+              break;
+            case ViewPagerBottomSheetBehavior.STATE_COLLAPSED:
+            case ViewPagerBottomSheetBehavior.STATE_EXPANDED:
+              ViewGroup.LayoutParams params = viewMain.getLayoutParams();
+              params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+              viewMain.setLayoutParams(params);
+              break;
+          }
         }
 
         @Override
         public void onSlide(View bottomSheet, float slideOffset) {
-            if (viewgroup_static != null) {
-                int range = (int) (screenHeight - (metrics.density * peek_height));
-                if (slideOffset > 0){
-                    viewgroup_static.setTranslationY((range * slideOffset) - range);
-                }else{
-                    int peekHeightDp = (int) ((metrics.density * peek_height));
-                    viewgroup_static.setTranslationY((peekHeightDp * slideOffset)-range);
-                }
-            }
-        }
-    };
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getDialog().getWindow().setWindowAnimations(R.style.dialog_animation_fade);
-
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        metrics = this.getResources().getDisplayMetrics();
-        screenHeight = getScreenHeightExcludingTopBottomBar(true,true);
-        screenHeightIncludingBottomBar = getScreenHeightExcludingTopBottomBar(false,true);
-    }
-
-
-    private int getScreenHeightExcludingTopBottomBar(boolean excludeTopBar, boolean excludeBottomBar) {
-        Context context = getContext();
-        if (context == null) {
-            return metrics.heightPixels;
-        }
-        WindowManager wm = ((WindowManager)
-                context.getSystemService(Context.WINDOW_SERVICE));
-        Display display = wm.getDefaultDisplay();
-        Point screenSize = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getRealSize(screenSize);
-        } else {
-            display.getSize(screenSize);
-        }
-        int total = screenSize.y;
-        Resources resources = context.getResources();
-        if (excludeBottomBar) {
-            int navBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-            int bottomBarHeight = 0;
-            if (navBarResourceId > 0) {
-                bottomBarHeight = resources.getDimensionPixelSize(navBarResourceId);
-            }
-            total -= bottomBarHeight;
-        }
-        if (excludeTopBar) {
-            int topBarHeight;
-            final int statusBarResourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-            if (statusBarResourceId > 0) {
-                topBarHeight = resources.getDimensionPixelSize(statusBarResourceId);
+          if (viewGroupStatic != null) {
+            int range = (int) (screenHeight - (metrics.density * peekHeight));
+            if (slideOffset > 0) {
+              viewGroupStatic.setTranslationY((range * slideOffset) - range);
             } else {
-                topBarHeight = (int) Math.ceil((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25) * metrics.density);
+              int peekHeightDp = (int) ((metrics.density * peekHeight));
+              viewGroupStatic.setTranslationY((peekHeightDp * slideOffset) - range);
             }
-            total -= topBarHeight;
+          }
         }
+      };
 
-        return total;
+  @Override
+  public void onStart() {
+    super.onStart();
+    if (getDialog() != null) {
+      getDialog().getWindow().setWindowAnimations(R.style.dialog_animation_fade);
+    }
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    metrics = this.getResources().getDisplayMetrics();
+    screenHeight = getScreenHeightExcludingTopBottomBar(true);
+    screenHeightIncludingBottomBar = getScreenHeightExcludingTopBottomBar(false);
+  }
+
+  @SuppressLint("DiscouragedApi")
+  private int getScreenHeightExcludingTopBottomBar(boolean excludeTopBar) {
+    Context context = getContext();
+    if (context == null) {
+      return metrics.heightPixels;
+    }
+    WindowManager wm = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
+    Display display = wm.getDefaultDisplay();
+    Point screenSize = new Point();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      display.getRealSize(screenSize);
+    } else {
+      display.getSize(screenSize);
+    }
+    int total = screenSize.y;
+    final Resources resources = context.getResources();
+    int navBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+    int bottomBarHeight = 0;
+    if (navBarResourceId > 0) {
+      bottomBarHeight = resources.getDimensionPixelSize(navBarResourceId);
+    }
+    total -= bottomBarHeight;
+    if (excludeTopBar) {
+      int topBarHeight;
+      final int statusBarResourceId =
+          resources.getIdentifier("status_bar_height", "dimen", "android");
+      if (statusBarResourceId > 0) {
+        topBarHeight = resources.getDimensionPixelSize(statusBarResourceId);
+      } else {
+        topBarHeight =
+            (int)
+                Math.ceil(
+                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25) * metrics.density);
+      }
+      total -= topBarHeight;
     }
 
-    @Override
-    public void setupDialog(Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
-        if (viewPager != null) {
-            BottomSheetUtils.setupViewPager(viewPager);
-        }
+    return total;
+  }
 
-        dialog.setContentView(contentView);
+  @SuppressLint("RestrictedApi")
+  @Override
+  public void setupDialog(@NonNull Dialog dialog, int style) {
+    super.setupDialog(dialog, style);
+    if (viewPager != null) {
+      BottomSheetUtils.setupViewPager(viewPager);
+    }
 
-        int[] location = new int[2];
-        parent_fab.getLocationInWindow(location);
-        int x = location[0];
-        int y = location[1];
+    dialog.setContentView(contentView);
 
-        fab_size = parent_fab.getHeight();
-        fab_pos_y = y;
-        fab_pos_x = x;
-        fab_icon_resource = parent_fab.getDrawable();
-        fab_background_color_resource = parent_fab.getBackgroundTintList();
+    int[] location = new int[2];
+    parentFab.getLocationInWindow(location);
+    int x = location[0];
+    int y = location[1];
 
-        ((View) contentView.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
+    fabSize = parentFab.getHeight();
+    fabPosY = y;
+    fabPosX = x;
+    fabIconResource = parentFab.getDrawable();
+    ColorStateList fabBackgroundColorResource = parentFab.getBackgroundTintList();
 
-        mBottomSheetBehavior = ViewPagerBottomSheetBehavior.from(((View) contentView.getParent()));
-        if (mBottomSheetBehavior != null) {
-            mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
-            if ((fab_pos_y - (metrics.heightPixels - (metrics.density * peek_height)) + (fab_size * metrics.density) - (fab_size * metrics.density)) <= 0) {
-                is_fab_outside_peekheight = true;
-                mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
-                fab_outside_y_offest = (int) (metrics.heightPixels - fab_pos_y - (metrics.density * peek_height));
-            } else {
-                mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
-            }
-            contentView.requestLayout();
-        }
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                ViewPagerBottomSheetDialog d = (ViewPagerBottomSheetDialog) dialog;
-                bottomSheet = (FrameLayout) d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-                if (viewgroup_static != null) {
-                    int range = (int) (screenHeight - (metrics.density * peek_height));
+    ((View) contentView.getParent())
+        .setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-                    viewgroup_static.setTranslationY(-range);
-                }
-                int fab_range_y = (int) (fab_pos_y - (screenHeightIncludingBottomBar - (metrics.density * peek_height)));
-                fabulous_fab.setY(fab_range_y + fab_outside_y_offest);
-                fabulous_fab.setX(fab_pos_x);
-                view_main.setVisibility(View.INVISIBLE);
-                fabAnim();
+    bottomSheetBehavior = ViewPagerBottomSheetBehavior.from(((View) contentView.getParent()));
+    bottomSheetBehavior.setBottomSheetCallback(bottomSheetBehaviorCallback);
+    if ((fabPosY
+            - (metrics.heightPixels - (metrics.density * peekHeight))
+            + (fabSize * metrics.density)
+            - (fabSize * metrics.density))
+        <= 0) {
+      isFabOutsidePeekheight = true;
+      bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
+      fabOutsideYOffset = (int) (metrics.heightPixels - fabPosY - (metrics.density * peekHeight));
+    } else {
+      bottomSheetBehavior.setPeekHeight((int) (metrics.density * peekHeight));
+    }
+    contentView.requestLayout();
+    dialog.setOnShowListener(
+        dialog1 -> {
+          ViewPagerBottomSheetDialog viewPagerBottomSheetDialog =
+              (ViewPagerBottomSheetDialog) dialog1;
+          bottomSheet =
+              viewPagerBottomSheetDialog.findViewById(
+                  com.google.android.material.R.id.design_bottom_sheet);
+          if (bottomSheet != null) {
+            ViewPagerBottomSheetBehavior.from(bottomSheet)
+                .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
+          }
+          if (viewGroupStatic != null) {
+            int range = (int) (screenHeight - (metrics.density * peekHeight));
 
-            }
+            viewGroupStatic.setTranslationY(-range);
+          }
+          int fabRangeY =
+              (int) (fabPosY - (screenHeightIncludingBottomBar - (metrics.density * peekHeight)));
+          fabulousFab.setY(fabRangeY + fabOutsideYOffset);
+          fabulousFab.setX(fabPosX);
+          viewMain.setVisibility(View.INVISIBLE);
+          fabAnim();
         });
 
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
-        CoordinatorLayout.Behavior behavior = params.getBehavior();
+    CoordinatorLayout.LayoutParams params =
+        (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
+    CoordinatorLayout.Behavior behavior = params.getBehavior();
 
-        if (behavior != null && behavior instanceof ViewPagerBottomSheetBehavior) {
-            ((ViewPagerBottomSheetBehavior) behavior).setBottomSheetCallback(mBottomSheetBehaviorCallback);
-        }
-
-        scale_by = (float) (peek_height * 1.6 / fab_size) * metrics.density;
-        fabulous_fab = (FloatingActionButton) contentView.findViewWithTag("aah_fab");
-        fl = (FrameLayout) contentView.findViewWithTag("aah_fl");
-        int newfabsize = fab_size;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int ele = (int) Math.floor(parent_fab.getCompatElevation() / 2);
-            newfabsize = (int) (fab_size - (metrics.density * (18 + (6 * ele))));
-            scale_by = (float) (peek_height * 2 / newfabsize) * metrics.density;
-
-        }
-
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(newfabsize, newfabsize);
-        lp.gravity = Gravity.CENTER;
-        fabulous_fab.setLayoutParams(lp);
-        fabulous_fab.setImageDrawable(fab_icon_resource);
-        fabulous_fab.setBackgroundTintList(fab_background_color_resource);
-
-
+    if (behavior instanceof ViewPagerBottomSheetBehavior) {
+      ((ViewPagerBottomSheetBehavior) behavior).setBottomSheetCallback(bottomSheetBehaviorCallback);
     }
 
+    scaleBy = (float) (peekHeight * 1.6 / fabSize) * metrics.density;
+    fabulousFab = contentView.findViewWithTag("aah_fab");
+    frameLayout = contentView.findViewWithTag("aah_fl");
+    int newfabsize = fabSize;
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      int elevation = (int) Math.floor(parentFab.getCompatElevation() / 2);
+      newfabsize = (int) (fabSize - (metrics.density * (18 + (6 * elevation))));
+      scaleBy = (float) (peekHeight * 2 / newfabsize) * metrics.density;
+    }
 
-    private void fabAnim() {
-        if (animationListener != null) animationListener.onOpenAnimationStart();
-        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2), 0, -(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))));
-        anim.setDuration(anim_duration);
-        fl.startAnimation(anim);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                if (getActivity() != null && !getActivity().isFinishing()) {
-                    parent_fab.setVisibility(View.GONE);
-                }
+    final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(newfabsize, newfabsize);
+    lp.gravity = Gravity.CENTER;
+    fabulousFab.setLayoutParams(lp);
+    fabulousFab.setImageDrawable(fabIconResource);
+    fabulousFab.setBackgroundTintList(fabBackgroundColorResource);
+  }
+
+  private void fabAnim() {
+    if (animationListener != null) {
+      animationListener.onOpenAnimationStart();
+    }
+    AAH_ArcTranslateAnimation anim =
+        new AAH_ArcTranslateAnimation(
+            0,
+            metrics.widthPixels / 2 - fabPosX - (fabSize / 2),
+            0,
+            -(metrics.density
+                * ((peekHeight / 2)
+                    - ((((metrics.heightPixels - fabPosY) - fabSize) / metrics.density)))));
+    anim.setDuration(animDuration);
+    frameLayout.startAnimation(anim);
+    anim.setAnimationListener(
+        new Animation.AnimationListener() {
+          @Override
+          public void onAnimationStart(Animation animation) {
+            if (getActivity() != null && !getActivity().isFinishing()) {
+              parentFab.setVisibility(View.GONE);
             }
+          }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                fabulous_fab.setImageResource(android.R.color.transparent);
-                fabulous_fab.animate().setListener(null);
-                fabulous_fab.setVisibility(View.INVISIBLE);
-                //Do something after 100ms
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
-                        ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-                        if (is_fab_outside_peekheight) {
-                            bottomSheet.requestLayout();
-                        }
-
-                        fabulous_fab.animate().translationXBy(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2))
-                                .translationYBy(-(metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))) - fab_outside_y_offest).setDuration(0)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationStart(Animator animation) {
-                                        super.onAnimationStart(animation);
-                                        fabulous_fab.setVisibility(View.VISIBLE);
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        super.onAnimationEnd(animation);
-                                        fabulous_fab.animate().setListener(null);
-                                        fabulous_fab.animate().scaleXBy(scale_by)
-                                                .scaleYBy(scale_by)
-                                                .setDuration(anim_duration)
-                                                .setListener(new AnimatorListenerAdapter() {
-                                                    @Override
-                                                    public void onAnimationEnd(Animator animation) {
-                                                        super.onAnimationEnd(animation);
-                                                        fabulous_fab.animate().setListener(null);
-                                                        fabulous_fab.setVisibility(View.GONE);
-                                                        view_main.setVisibility(View.VISIBLE);
-                                                        if (animationListener != null)
-                                                            animationListener.onOpenAnimationEnd();
-
-                                                    }
-                                                });
-
-
-                                    }
-                                });
+          @Override
+          public void onAnimationEnd(Animation animation) {
+            fabulousFab.setImageResource(android.R.color.transparent);
+            fabulousFab.animate().setListener(null);
+            fabulousFab.setVisibility(View.INVISIBLE);
+            // Do something after 100ms
+            final Handler handler = new Handler();
+            handler.postDelayed(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    bottomSheetBehavior.setPeekHeight((int) (metrics.density * peekHeight));
+                    ViewPagerBottomSheetBehavior.from(bottomSheet)
+                        .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
+                    if (isFabOutsidePeekheight) {
+                      bottomSheet.requestLayout();
                     }
-                }, 10);
 
-            }
+                    fabulousFab
+                        .animate()
+                        .translationXBy(metrics.widthPixels / 2 - fabPosX - (fabSize / 2))
+                        .translationYBy(
+                            -(metrics.density
+                                    * ((peekHeight / 2)
+                                        - ((((metrics.heightPixels - fabPosY) - fabSize)
+                                            / metrics.density))))
+                                - fabOutsideYOffset)
+                        .setDuration(0)
+                        .setListener(
+                            new AnimatorListenerAdapter() {
+                              @Override
+                              public void onAnimationStart(Animator animation) {
+                                super.onAnimationStart(animation);
+                                fabulousFab.setVisibility(View.VISIBLE);
+                              }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                              @Override
+                              public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                fabulousFab.animate().setListener(null);
+                                fabulousFab
+                                    .animate()
+                                    .scaleXBy(scaleBy)
+                                    .scaleYBy(scaleBy)
+                                    .setDuration(animDuration)
+                                    .setListener(
+                                        new AnimatorListenerAdapter() {
+                                          @Override
+                                          public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            fabulousFab.animate().setListener(null);
+                                            fabulousFab.setVisibility(View.GONE);
+                                            viewMain.setVisibility(View.VISIBLE);
+                                            if (animationListener != null)
+                                              animationListener.onOpenAnimationEnd();
+                                          }
+                                        });
+                              }
+                            });
+                  }
+                },
+                10);
+          }
 
-            }
+          @Override
+          public void onAnimationRepeat(Animation animation) {}
         });
+  }
 
+  public void closeFilter(final Object object) {
+    if (animationListener != null) {
+      animationListener.onCloseAnimationStart();
     }
-
-    public void closeFilter(final Object o) {
-        if (animationListener != null) animationListener.onCloseAnimationStart();
-        if (ViewPagerBottomSheetBehavior.from(bottomSheet).getState() == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
-            ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-        }
-        fabulous_fab.setVisibility(View.VISIBLE);
-        view_main.setVisibility(View.INVISIBLE);
-        fabulous_fab.animate().scaleXBy(-scale_by)
-                .scaleYBy(-scale_by)
-                .setDuration(anim_duration)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        fabulous_fab.animate().setListener(null);
-                        fabulous_fab.setImageDrawable(fab_icon_resource);
-                        if (is_fab_outside_peekheight) {
-                            mBottomSheetBehavior.setPeekHeight(metrics.heightPixels - fab_pos_y);
-                            ViewPagerBottomSheetBehavior.from(bottomSheet).setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-                            bottomSheet.requestLayout();
-//                            fabulous_fab.setY(fab_outside_y_offest - fab_pos_y + getStatusBarHeight(getContext()));
-                        } else {
-                            mBottomSheetBehavior.setPeekHeight((int) (metrics.density * peek_height));
-                        }
-                        float from_y, to_y;
-
-                        from_y = fab_outside_y_offest;
-                        to_y = (metrics.density * ((peek_height / 2) - ((((metrics.heightPixels - fab_pos_y) - fab_size) / metrics.density)))) + fab_outside_y_offest;
-                        AAH_ArcTranslateAnimation anim = new AAH_ArcTranslateAnimation(0, -(metrics.widthPixels / 2 - fab_pos_x - (fab_size / 2)), from_y, to_y);
-                        anim.setDuration(anim_duration);
-                        fl.startAnimation(anim);
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                fabulous_fab.animate().setListener(null);
-                                fabulous_fab.setVisibility(View.INVISIBLE);
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //Do something after 100ms
-                                        if (animationListener != null)
-                                            animationListener.onCloseAnimationEnd();
-                                        if (callbacks != null) {
-                                            callbacks.onResult(o);
-                                        }
-                                        dismiss();
-                                    }
-                                }, 50);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-
-                    }
-                });
+    if (ViewPagerBottomSheetBehavior.from(bottomSheet).getState()
+        == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
+      ViewPagerBottomSheetBehavior.from(bottomSheet)
+          .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
     }
+    fabulousFab.setVisibility(View.VISIBLE);
+    viewMain.setVisibility(View.INVISIBLE);
+    fabulousFab
+        .animate()
+        .scaleXBy(-scaleBy)
+        .scaleYBy(-scaleBy)
+        .setDuration(animDuration)
+        .setListener(
+            new AnimatorListenerAdapter() {
+              @Override
+              public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                fabulousFab.animate().setListener(null);
+                fabulousFab.setImageDrawable(fabIconResource);
+                if (isFabOutsidePeekheight) {
+                  bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
+                  ViewPagerBottomSheetBehavior.from(bottomSheet)
+                      .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
+                  bottomSheet.requestLayout();
+                } else {
+                  bottomSheetBehavior.setPeekHeight((int) (metrics.density * peekHeight));
+                }
+                float from_y, to_y;
+                from_y = fabOutsideYOffset;
+                to_y =
+                    (metrics.density
+                            * ((peekHeight / 2)
+                                - ((((metrics.heightPixels - fabPosY) - fabSize)
+                                    / metrics.density))))
+                        + fabOutsideYOffset;
+                AAH_ArcTranslateAnimation anim =
+                    new AAH_ArcTranslateAnimation(
+                        0, -(metrics.widthPixels / 2 - fabPosX - (fabSize / 2)), from_y, to_y);
+                anim.setDuration(animDuration);
+                frameLayout.startAnimation(anim);
+                anim.setAnimationListener(
+                    new Animation.AnimationListener() {
+                      @Override
+                      public void onAnimationStart(Animation animation) {}
 
-    @Override
-    public void onStop() {
-        parent_fab.setVisibility(View.VISIBLE);
-        super.onStop();
-    }
+                      @Override
+                      public void onAnimationEnd(Animation animation) {
+                        fabulousFab.animate().setListener(null);
+                        fabulousFab.setVisibility(View.INVISIBLE);
+                        final Handler handler = new Handler();
+                        handler.postDelayed(
+                            () -> {
+                              // Do something after 100ms
+                              if (animationListener != null)
+                                animationListener.onCloseAnimationEnd();
+                              if (callbacks != null) {
+                                callbacks.onResult(object);
+                              }
+                              dismiss();
+                            },
+                            50);
+                      }
 
+                      @Override
+                      public void onAnimationRepeat(Animation animation) {}
+                    });
+              }
+            });
+  }
 
-    public interface Callbacks {
-        void onResult(Object result);
-    }
+  @Override
+  public void onStop() {
+    parentFab.setVisibility(View.VISIBLE);
+    super.onStop();
+  }
 
-    public interface AnimationListener {
-        void onOpenAnimationStart();
+  public interface Callbacks {
+    void onResult(Object result);
+  }
 
-        void onOpenAnimationEnd();
+  public interface AnimationListener {
+    void onOpenAnimationStart();
 
-        void onCloseAnimationStart();
+    void onOpenAnimationEnd();
 
-        void onCloseAnimationEnd();
-    }
+    void onCloseAnimationStart();
 
-    public void setPeekHeight(int peek_height) {
-        this.peek_height = peek_height;
-    }
+    void onCloseAnimationEnd();
+  }
 
-    public void setViewMain(View view_main) {
-        this.view_main = view_main;
-    }
+  public void setPeekHeight(int peek_height) {
+    this.peekHeight = peek_height;
+  }
 
-    public void setViewgroupStatic(View viewgroup_static) {
-        this.viewgroup_static = viewgroup_static;
-    }
+  public void setViewMain(View viewMain) {
+    this.viewMain = viewMain;
+  }
 
-    public void setMainContentView(View contentView) {
-        this.contentView = contentView;
-    }
+  public void setViewgroupStatic(View viewGroupStatic) {
+    this.viewGroupStatic = viewGroupStatic;
+  }
 
+  public void setMainContentView(View contentView) {
+    this.contentView = contentView;
+  }
 
-    public void setCallbacks(Callbacks callbacks) {
-        this.callbacks = callbacks;
-    }
+  public void setCallbacks(Callbacks callbacks) {
+    this.callbacks = callbacks;
+  }
 
-    public void setAnimationListener(AnimationListener animationListener) {
-        this.animationListener = animationListener;
-    }
+  public void setAnimationListener(AnimationListener animationListener) {
+    this.animationListener = animationListener;
+  }
 
-    public void setParentFab(FloatingActionButton parent_fab) {
-        this.parent_fab = parent_fab;
-    }
+  public void setParentFab(FloatingActionButton parentFab) {
+    this.parentFab = parentFab;
+  }
 
-    public void setAnimationDuration(int anim_duration) {
-        this.anim_duration = anim_duration;
-    }
+  public void setAnimationDuration(int animDuration) {
+    this.animDuration = animDuration;
+  }
 
-    public void setViewPager(ViewPager viewPager) {
-        this.viewPager = viewPager;
-    }
+  public void setViewPager(ViewPager viewPager) {
+    this.viewPager = viewPager;
+  }
 }
