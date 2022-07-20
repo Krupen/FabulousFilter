@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
 
@@ -24,7 +26,7 @@ public class FragmentExampleFabFragment extends AAH_FabulousFragment {
 
     @Override
 
-    public void setupDialog(Dialog dialog, int style) {
+    public void setupDialog(@NonNull Dialog dialog, int style) {
         View contentView = View.inflate(getContext(), R.layout.filter_sample_view, null);
 
         RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
