@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -279,51 +280,36 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                     if (isFabOutsidePeekheight) {
                       bottomSheet.requestLayout();
                     }
-
+                    fabulousFab.setVisibility(View.VISIBLE);
+                    fabulousFab.setTranslationX(0f);
+                    float offsetY =
+                        -(metrics.density
+                                * ((peekHeight / 2)
+                                    - ((((metrics.heightPixels - fabPosY) - fabSize)
+                                        / metrics.density))))
+                            - fabOutsideYOffset;
+                    fabulousFab.setTranslationY(fabulousFab.getTranslationY() + offsetY);
+                    fabulousFab.animate().setListener(null);
                     fabulousFab
                         .animate()
-                        .translationXBy(metrics.widthPixels / 2 - fabPosX - (fabSize / 2))
-                        .translationYBy(
-                            -(metrics.density
-                                    * ((peekHeight / 2)
-                                        - ((((metrics.heightPixels - fabPosY) - fabSize)
-                                            / metrics.density))))
-                                - fabOutsideYOffset)
-                        .setDuration(0)
+                        .scaleXBy(scaleBy)
+                        .scaleYBy(scaleBy)
+                        .setDuration(animDuration)
                         .setListener(
                             new AnimatorListenerAdapter() {
-                              @Override
-                              public void onAnimationStart(Animator animation) {
-                                super.onAnimationStart(animation);
-                                fabulousFab.setVisibility(View.VISIBLE);
-                              }
-
                               @Override
                               public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 fabulousFab.animate().setListener(null);
-                                fabulousFab
-                                    .animate()
-                                    .scaleXBy(scaleBy)
-                                    .scaleYBy(scaleBy)
-                                    .setDuration(animDuration)
-                                    .setListener(
-                                        new AnimatorListenerAdapter() {
-                                          @Override
-                                          public void onAnimationEnd(Animator animation) {
-                                            super.onAnimationEnd(animation);
-                                            fabulousFab.animate().setListener(null);
-                                            fabulousFab.setVisibility(View.GONE);
-                                            viewMain.setVisibility(View.VISIBLE);
-                                            if (animationListener != null)
-                                              animationListener.onOpenAnimationEnd();
-                                          }
-                                        });
+                                fabulousFab.setVisibility(View.GONE);
+                                viewMain.setVisibility(View.VISIBLE);
+                                if (animationListener != null)
+                                  animationListener.onOpenAnimationEnd();
                               }
                             });
                   }
                 },
-                10);
+                100);
           }
 
           @Override
