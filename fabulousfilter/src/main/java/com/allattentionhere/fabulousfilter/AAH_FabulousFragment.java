@@ -22,13 +22,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 
 import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.BottomSheetUtils;
@@ -42,7 +42,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
   private int fabSize = 56, fabPosY, fabPosX;
   private float scaleBy = 12f;
   private int fabOutsideYOffset = 0;
-  private boolean isFabOutsidePeekheight;
+  private boolean isFabOutsidePeekHeight;
   private FloatingActionButton parentFab;
   @NonNull private DisplayMetrics metrics;
   private FrameLayout bottomSheet;
@@ -52,6 +52,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
   private int screenHeight, screenHeightExcludingTopBar, screenHeightExcludingTopBottomBar;
   private int peekHeight = 400;
   private int animDuration = 500;
+  private Interpolator interpolator;
   private FloatingActionButton fabulousFab;
   private FrameLayout fabContainer;
   private View viewMain;
@@ -187,7 +188,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
             + (fabSize * metrics.density)
             - (fabSize * metrics.density))
         <= 0) {
-      isFabOutsidePeekheight = true;
+      isFabOutsidePeekHeight = true;
       bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
       fabOutsideYOffset = (int) (metrics.heightPixels - fabPosY - (metrics.density * peekHeight));
     } else {
@@ -265,6 +266,9 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
             -(metrics.density
                 * ((peekHeight / 2)
                     - ((((metrics.heightPixels - fabPosY) - fabSize) / metrics.density)))));
+    if (interpolator != null) {
+      anim.setInterpolator(interpolator);
+    }
     anim.setDuration(animDuration);
     anim.setAnimationListener(
         new Animation.AnimationListener() {
@@ -289,7 +293,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                     bottomSheetBehavior.setPeekHeight((int) (metrics.density * peekHeight));
                     ViewPagerBottomSheetBehavior.from(bottomSheet)
                         .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-                    if (isFabOutsidePeekheight) {
+                    if (isFabOutsidePeekHeight) {
                       bottomSheet.requestLayout();
                     }
                     fabulousFab.setVisibility(View.VISIBLE);
@@ -353,7 +357,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                 super.onAnimationEnd(animation);
                 fabulousFab.animate().setListener(null);
                 fabulousFab.setImageDrawable(fabIconResource);
-                if (isFabOutsidePeekheight) {
+                if (isFabOutsidePeekHeight) {
                   bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
                   ViewPagerBottomSheetBehavior.from(bottomSheet)
                       .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
@@ -373,6 +377,9 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                     new AAH_ArcTranslateAnimation(
                         0, -(metrics.widthPixels / 2 - fabPosX - (fabSize / 2)), from_y, to_y);
                 anim.setDuration(animDuration);
+                if (interpolator != null) {
+                  anim.setInterpolator(interpolator);
+                }
                 fabContainer.startAnimation(anim);
                 anim.setAnimationListener(
                     new Animation.AnimationListener() {
@@ -454,6 +461,10 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
   public void setAnimationDuration(int animDuration) {
     this.animDuration = animDuration;
+  }
+
+  public void setInterpolator(Interpolator interpolator) {
+    this.interpolator = interpolator;
   }
 
   public void setViewPager(ViewPager viewPager) {

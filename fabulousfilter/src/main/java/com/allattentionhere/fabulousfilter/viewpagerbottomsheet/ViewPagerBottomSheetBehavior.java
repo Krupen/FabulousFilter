@@ -122,12 +122,12 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends CoordinatorLay
   }
 
   @Override
-  public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
+  public Parcelable onSaveInstanceState(@NonNull CoordinatorLayout parent, @NonNull V child) {
     return new SavedState(super.onSaveInstanceState(parent, child), state);
   }
 
   @Override
-  public void onRestoreInstanceState(CoordinatorLayout parent, V child, Parcelable state) {
+  public void onRestoreInstanceState(@NonNull CoordinatorLayout parent, @NonNull V child, @NonNull Parcelable state) {
     SavedState savedState = (SavedState) state;
     super.onRestoreInstanceState(parent, child, savedState.getSuperState());
     // Intermediate states are restored as collapsed state
