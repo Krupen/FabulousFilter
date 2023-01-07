@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -49,11 +49,11 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
   private ViewPagerBottomSheetBehavior bottomSheetBehavior;
 
   // user params
-  private int screenHeight, screenHeightIncludingBottomBar;
+  private int screenHeight, screenHeightExcludingTopBar, screenHeightExcludingTopBottomBar;
   private int peekHeight = 400;
   private int animDuration = 500;
   private FloatingActionButton fabulousFab;
-  private FrameLayout frameLayout;
+  private FrameLayout fabContainer;
   private View viewMain;
   private View viewGroupStatic;
   private Drawable fabIconResource;
@@ -109,12 +109,13 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     metrics = this.getResources().getDisplayMetrics();
-    screenHeight = getScreenHeightExcludingTopBottomBar(true);
-    screenHeightIncludingBottomBar = getScreenHeightExcludingTopBottomBar(false);
+    screenHeight = getScreenHeightTopBottomBar(true, true);
+    screenHeightExcludingTopBar = getScreenHeightTopBottomBar(false, true);
+    screenHeightExcludingTopBottomBar = getScreenHeightTopBottomBar(false, false);
   }
 
   @SuppressLint("DiscouragedApi")
-  private int getScreenHeightExcludingTopBottomBar(boolean excludeTopBar) {
+  private int getScreenHeightTopBottomBar(boolean excludeTopBar, boolean excludeBottomBar) {
     Context context = getContext();
     if (context == null) {
       return metrics.heightPixels;
@@ -129,12 +130,14 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     }
     int total = screenSize.y;
     final Resources resources = context.getResources();
-    int navBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-    int bottomBarHeight = 0;
-    if (navBarResourceId > 0) {
-      bottomBarHeight = resources.getDimensionPixelSize(navBarResourceId);
+    if (excludeBottomBar) {
+      int navBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+      int bottomBarHeight = 0;
+      if (navBarResourceId > 0) {
+        bottomBarHeight = resources.getDimensionPixelSize(navBarResourceId);
+      }
+      total -= bottomBarHeight;
     }
-    total -= bottomBarHeight;
     if (excludeTopBar) {
       int topBarHeight;
       final int statusBarResourceId =
@@ -207,8 +210,11 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
             viewGroupStatic.setTranslationY(-range);
           }
-          int fabRangeY =
-              (int) (fabPosY - (screenHeightIncludingBottomBar - (metrics.density * peekHeight)));
+          int screenHeightToUse =
+              getContext() != null && isSystemBarOnBottom(getContext(), metrics)
+                  ? screenHeightExcludingTopBar
+                  : screenHeightExcludingTopBottomBar;
+          int fabRangeY = (int) (fabPosY - (screenHeightToUse - (metrics.density * peekHeight)));
           fabulousFab.setY(fabRangeY + fabOutsideYOffset);
           fabulousFab.setX(fabPosX);
           viewMain.setVisibility(View.INVISIBLE);
@@ -225,7 +231,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
     scaleBy = (float) (peekHeight * 1.6 / fabSize) * metrics.density;
     fabulousFab = contentView.findViewWithTag("aah_fab");
-    frameLayout = contentView.findViewWithTag("aah_fl");
+    fabContainer = contentView.findViewWithTag("aah_fl");
     int newfabsize = fabSize;
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       int elevation = (int) Math.floor(parentFab.getCompatElevation() / 2);
@@ -238,6 +244,13 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     fabulousFab.setLayoutParams(lp);
     fabulousFab.setImageDrawable(fabIconResource);
     fabulousFab.setBackgroundTintList(fabBackgroundColorResource);
+  }
+
+  private static boolean isSystemBarOnBottom(Context context, DisplayMetrics metrics) {
+    Configuration configuration = context.getResources().getConfiguration();
+    boolean canMove =
+        (metrics.widthPixels != metrics.heightPixels && configuration.smallestScreenWidthDp < 600);
+    return (!canMove || metrics.widthPixels < metrics.heightPixels);
   }
 
   private void fabAnim() {
@@ -253,7 +266,6 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                 * ((peekHeight / 2)
                     - ((((metrics.heightPixels - fabPosY) - fabSize) / metrics.density)))));
     anim.setDuration(animDuration);
-    frameLayout.startAnimation(anim);
     anim.setAnimationListener(
         new Animation.AnimationListener() {
           @Override
@@ -315,6 +327,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
           @Override
           public void onAnimationRepeat(Animation animation) {}
         });
+    fabContainer.startAnimation(anim);
   }
 
   public void closeFilter(final Object object) {
@@ -360,7 +373,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                     new AAH_ArcTranslateAnimation(
                         0, -(metrics.widthPixels / 2 - fabPosX - (fabSize / 2)), from_y, to_y);
                 anim.setDuration(animDuration);
-                frameLayout.startAnimation(anim);
+                fabContainer.startAnimation(anim);
                 anim.setAnimationListener(
                     new Animation.AnimationListener() {
                       @Override

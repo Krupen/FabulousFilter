@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 /** Created by krupenghetiya on 26/06/17. */
 public class AAH_FilterView extends FrameLayout {
-  @NonNull FrameLayout frameLayout;
+  @NonNull FrameLayout fabContainer;
   @NonNull FloatingActionButton fab;
 
   public AAH_FilterView(Context context) {
@@ -36,12 +36,12 @@ public class AAH_FilterView extends FrameLayout {
   }
 
   public void init() {
-    frameLayout = new FrameLayout(getContext());
-    frameLayout.setTag("aah_fl");
+    fabContainer = new FrameLayout(getContext());
+    fabContainer.setTag("aah_fl");
     fab = new FloatingActionButton(getContext());
     fab.setTag("aah_fab");
     fab.setCompatElevation(0);
-    frameLayout.addView(fab);
-    this.addView(frameLayout);
+    fabContainer.addView(fab);
+    this.addView(fabContainer);
   }
 }
