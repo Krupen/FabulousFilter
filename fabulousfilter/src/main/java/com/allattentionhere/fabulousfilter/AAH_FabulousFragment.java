@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -39,9 +40,9 @@ import com.allattentionhere.fabulousfilter.viewpagerbottomsheet.ViewPagerBottomS
 /** Created by krupenghetiya on 05/10/16. */
 public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
-  private int fabSize = 56, fabPosY, fabPosX;
+  private int fabSize = 56, fabPosY, fabPosX, fabOutsidePeekHeightBuffer;
   private float scaleBy = 12f;
-  private int fabOutsideYOffset = 0;
+  private float fabOutsideYOffset = 0f;
   private boolean isFabOutsidePeekHeight;
   private FloatingActionButton parentFab;
   @NonNull private DisplayMetrics metrics;
@@ -173,6 +174,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     int y = location[1];
 
     fabSize = parentFab.getHeight();
+    fabOutsidePeekHeightBuffer = (int) (4 * metrics.density);
     fabPosY = y;
     fabPosX = x;
     fabIconResource = parentFab.getDrawable();
@@ -183,14 +185,16 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
 
     bottomSheetBehavior = ViewPagerBottomSheetBehavior.from(((View) contentView.getParent()));
     bottomSheetBehavior.setBottomSheetCallback(bottomSheetBehaviorCallback);
-    if ((fabPosY
-            - (metrics.heightPixels - (metrics.density * peekHeight))
-            + (fabSize * metrics.density)
-            - (fabSize * metrics.density))
-        <= 0) {
+    if ((fabPosY - (metrics.heightPixels - (metrics.density * peekHeight))) <= 0) {
       isFabOutsidePeekHeight = true;
-      bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
-      fabOutsideYOffset = (int) (metrics.heightPixels - fabPosY - (metrics.density * peekHeight));
+      bottomSheetBehavior.setPeekHeight(
+          metrics.heightPixels - fabPosY + fabSize / 2 + fabOutsidePeekHeightBuffer);
+      fabOutsideYOffset =
+          metrics.heightPixels
+              - fabPosY
+              + (float) fabSize / 2
+              + fabOutsidePeekHeightBuffer
+              - (metrics.density * peekHeight);
     } else {
       bottomSheetBehavior.setPeekHeight((int) (metrics.density * peekHeight));
     }
@@ -261,10 +265,10 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
     AAH_ArcTranslateAnimation anim =
         new AAH_ArcTranslateAnimation(
             0,
-            metrics.widthPixels / 2 - fabPosX - (fabSize / 2),
+            (float) metrics.widthPixels / 2 - fabPosX - (float) (fabSize / 2),
             0,
             -(metrics.density
-                * ((peekHeight / 2)
+                * ((float) (peekHeight / 2)
                     - ((((metrics.heightPixels - fabPosY) - fabSize) / metrics.density)))));
     if (interpolator != null) {
       anim.setInterpolator(interpolator);
@@ -300,7 +304,7 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                     fabulousFab.setTranslationX(0f);
                     float offsetY =
                         -(metrics.density
-                                * ((peekHeight / 2)
+                                * ((float) (peekHeight / 2)
                                     - ((((metrics.heightPixels - fabPosY) - fabSize)
                                         / metrics.density))))
                             - fabOutsideYOffset;
@@ -358,7 +362,8 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                 fabulousFab.animate().setListener(null);
                 fabulousFab.setImageDrawable(fabIconResource);
                 if (isFabOutsidePeekHeight) {
-                  bottomSheetBehavior.setPeekHeight(metrics.heightPixels - fabPosY);
+                  bottomSheetBehavior.setPeekHeight(
+                      metrics.heightPixels - fabPosY + fabSize / 2 + fabOutsidePeekHeightBuffer);
                   ViewPagerBottomSheetBehavior.from(bottomSheet)
                       .setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
                   bottomSheet.requestLayout();
@@ -369,13 +374,16 @@ public class AAH_FabulousFragment extends ViewPagerBottomSheetDialogFragment {
                 from_y = fabOutsideYOffset;
                 to_y =
                     (metrics.density
-                            * ((peekHeight / 2)
+                            * ((float) (peekHeight / 2)
                                 - ((((metrics.heightPixels - fabPosY) - fabSize)
                                     / metrics.density))))
                         + fabOutsideYOffset;
                 AAH_ArcTranslateAnimation anim =
                     new AAH_ArcTranslateAnimation(
-                        0, -(metrics.widthPixels / 2 - fabPosX - (fabSize / 2)), from_y, to_y);
+                        0,
+                        -(float) (metrics.widthPixels / 2 - fabPosX - (float) (fabSize / 2)),
+                        from_y,
+                        to_y);
                 anim.setDuration(animDuration);
                 if (interpolator != null) {
                   anim.setInterpolator(interpolator);

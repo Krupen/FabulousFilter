@@ -28,13 +28,13 @@
         android:layout_height="match_parent" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_below="@+id/ll"
-        android:layout_marginTop="-24dp"
+        android:layout_marginTop="-28dp"
         android:layout_marginRight="16dp"
         android:layout_alignParentRight="true"
         android:tint="@color/filters_chips"
         android:id="@+id/fab2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:src="@drawable/ic_filter"
         app:backgroundTint="@color/filtersfab"
         app:elevation="0dp" />
