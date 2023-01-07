@@ -163,7 +163,6 @@ public class MainSampleActivity extends AppCompatActivity implements AAH_Fabulou
 
     @Override
     public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
         if (result.toString().equalsIgnoreCase("swiped_down")) {
             //do something or nothing
         } else {
