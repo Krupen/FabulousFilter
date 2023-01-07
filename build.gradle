@@ -5,22 +5,36 @@ buildscript {
         google()
         mavenCentral()
         maven { url "https://maven.google.com" }
-        maven { url "https://google.bintray.com/flexbox-layout" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
+
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
+}
+
+group = "io.github.krupen"
 
 allprojects {
     repositories {
         google()
         mavenCentral()
         maven { url "https://maven.google.com" }
-        maven { url "https://google.bintray.com/flexbox-layout" }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = ossrhUsername
+            password = ossrhPassword
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
     }
 }
 

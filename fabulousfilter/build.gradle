@@ -1,28 +1,26 @@
 apply plugin: 'com.android.library'
 
 ext {
-    bintrayRepo = 'FabulousFilter'
-    bintrayName = 'FabulousFilter'
-
-    publishedGroupId = 'com.allattentionhere'
-    libraryName = 'FabulousFilter'
-    artifact = 'fabulousfilter'
-
-    libraryDescription = 'Android library to animate floating action button to bottom sheet dialog'
-
-    siteUrl = 'https://github.com/Krupen/FabulousFilter'
-    gitUrl = 'https://github.com/Krupen/FabulousFilter.git'
-
-    libraryVersion = '0.0.5'
-
-    developerId = 'krupen'
-    developerName = 'Krupen Ghetiya'
-    developerEmail = 'krupen.ghetiya@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    PUBLISH_GROUP_ID = 'io.github.krupen'
+    PUBLISH_VERSION = '0.0.6'
+    PUBLISH_ARTIFACT_ID = 'fabulousfilter'
+    PUBLISH_DESCRIPTION = 'FabulousFilter Android SDK'
+    PUBLISH_URL = 'https://github.com/krupen/FabulousFilter'
+    PUBLISH_LICENSE_NAME = 'Apache License'
+    PUBLISH_LICENSE_URL =
+            'https://github.com/Krupen/FabulousFilter#license'
+    PUBLISH_DEVELOPER_ID = 'krupen'
+    PUBLISH_DEVELOPER_NAME = 'Krupen Ghetiya'
+    PUBLISH_DEVELOPER_EMAIL = 'krupen.ghetiya@gmail.com'
+    PUBLISH_SCM_CONNECTION =
+            'scm:git:github.com/krupen/FabulousFilter.git'
+    PUBLISH_SCM_DEVELOPER_CONNECTION =
+            'scm:git:ssh://github.com/krupen/FabulousFilter.git'
+    PUBLISH_SCM_URL =
+            'https://github.com/krupen/FabulousFilter/tree/master'
 }
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
 
 android {
     compileSdkVersion 33

@@ -19,21 +19,11 @@ It makes animation of FloatingActionButton to BottomSheetDialog easy to implemen
 # Download
 **Gradle**
 
-**Step 1.** Add the jCenter repository to your project-level build.gradle file
-
-``` groovy
-allprojects {
-	repositories {
-		jcenter()
-	}
-}
-```
-
-**Step 2.** Add the dependency to your app-level build.gradle file:
+Add the dependency to your app-level build.gradle file:
 
 ``` groovy
 dependencies {
-	 compile 'com.allattentionhere:fabulousfilter:0.0.5'
+	 implementation 'io.github.krupen:fabulousfilter:0.0.6'
 }
 ```
 
