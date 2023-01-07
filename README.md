@@ -63,6 +63,7 @@ public class MySampleFabFragment extends AAH_FabulousFragment {
 
         //params to set
         setAnimationDuration(600); //optional; default 500ms
+        setInterpolator(new AccelerateDecelerateInterpolator()); // optional
         setPeekHeight(300); // optional; default 400dp
         setCallbacks((Callbacks) getActivity()); //optional; to get back result
 	setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
@@ -141,6 +142,12 @@ This parameter sets animation duration of translate and scale animation in `mill
 setAnimationDuration(600); // default 500ms
 ```
 
+* ### Interpolator (Optional)
+This parameter is used to set interpolator for fab animation:
+```
+setInterpolator(new AccelerateDecelerateInterpolator());
+```
+
 * ### Peek Height (Optional)
 This parameter sets the peek height of the bottom sheet in `dp`:
 ```
@@ -148,7 +155,7 @@ setPeekHeight(300); // default 400dp
 ```
 
 * ### Callback (Optional)
-This paramter is used to get callback from `AAH_FabulousFragment` to the component that called it:
+This parameter is used to get callback from `AAH_FabulousFragment` to the component that called it:
 ```
 setCallbacks((Callbacks) getActivity());
 ```
