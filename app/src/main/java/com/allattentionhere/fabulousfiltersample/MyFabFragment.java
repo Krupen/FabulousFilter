@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -73,7 +73,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
     // params to set
     setAnimationDuration(600); // optional; default 500ms
-    setInterpolator(new AccelerateInterpolator()); // optional;
+    setInterpolator(new AccelerateDecelerateInterpolator()); // optional;
     setPeekHeight(300); // optional; default 400dp
     setCallbacks((Callbacks) getActivity()); // optional; to get back result
     setAnimationListener((AnimationListener) getActivity()); // optional; to get animation callbacks
