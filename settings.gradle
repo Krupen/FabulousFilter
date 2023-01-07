@@ -1,1 +1,2 @@
 include ':app', ':fabulousfilter'
+include ':scripts'
