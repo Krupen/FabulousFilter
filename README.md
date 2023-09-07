@@ -222,7 +222,7 @@ setViewPager(viewPager);
 * <a href="https://github.com/Krupen/AutoplayVideos" target="_blank">AutoplayVideos</a>
 
 # Apps by developer
-[![Price Stalker](https://github.com/Krupen/AutoplayVideos/blob/master/pricestalker.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.pricestalker)  [![Show Card Game](https://github.com/Krupen/AutoplayVideos/blob/master/show.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.show)  [![Safio chat](https://github.com/Krupen/AutoplayVideos/blob/master/safiochat.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.safio)
+[![Price Stalker](https://github.com/Krupen/AutoplayVideos/blob/master/pricestalker.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.pricestalker)  [![Show Card Game](https://github.com/Krupen/AutoplayVideos/blob/master/show.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.show)  [![Safio chat](https://github.com/Krupen/AutoplayVideos/blob/master/safiochat.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.safio)  [![Dota Picker Pro](https://github.com/Krupen/AutoplayVideos/blob/master/dotapicker.png?raw=true)](https://play.google.com/store/apps/details?id=com.allattentionhere.heropickerpro)
 
 # License
 Copyright 2017 Krupen Ghetiya
